@@ -18,7 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body className={`${azarMehr.variable} ${rokh.variable}`}>{children}
+      <body className={`${azarMehr.variable} ${rokh.variable}`}>
+        {children}
         <Footer />
       </body>
     </html>

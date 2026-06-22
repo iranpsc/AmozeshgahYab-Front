@@ -51,7 +51,7 @@ export default function LoginPage() {
 
       {/* Header */}
       <div className="absolute top-10 left-1/2 z-20 -translate-x-1/2">
-        <h1 className="text-center text-2xl md:text-4xl font-bold text-[#0d4b87]">
+        <h1 className="text-center text-xl lg:text-2xl md:text-4xl font-bold text-[#0d4b87]">
           amozeshgahyab.ir - سامانه آموزشگاه یاب
         </h1>
       </div>
@@ -71,7 +71,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
 
       {/* Login Card */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-4">
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 mt-16 lg:mt-0">
         <div className="w-full max-w-[430px] rounded-2xl bg-white p-8 shadow-2xl text-black">
 
           {/* Logo */}
