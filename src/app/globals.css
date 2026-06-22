@@ -11,6 +11,10 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+@theme {
+  --font-azarMehr: var(--font-azarMehr);
+  --font-rokh: var(--font-rokh);
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -22,6 +26,5 @@
 body {
   margin: 0;
   direction: rtl;
-  background: #fff;
-  color: #000;
 }
+
