@@ -93,8 +93,11 @@ if(
 
 
 async function request(){
-
-
+// console.log("ENDPOINT:", endpoint);
+// console.log("URL:", url);
+// console.log("Access Cookie:", access);
+// console.log("Refresh Cookie:", refresh);
+// console.log("Headers:", headers);
  return fetch(
   url,
   {
@@ -116,7 +119,11 @@ async function request(){
 let response =
 await request();
 
+console.log("Backend Status:", response.status);
 
+const responseText = await response.clone().text();
+
+console.log("Backend Body:", responseText);
 
 
 
@@ -488,9 +495,9 @@ return res;
 
 
 export {
- handler as GET,
- handler as POST,
- handler as PUT,
- handler as PATCH,
- handler as DELETE
+  handler as GET,
+  handler as POST,
+  handler as PUT,
+  handler as PATCH,
+  handler as DELETE,
 };

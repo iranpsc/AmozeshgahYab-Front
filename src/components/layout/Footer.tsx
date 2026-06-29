@@ -4,6 +4,8 @@ import {
     FaPhone,
     FaClock,
     FaMobileScreenButton,
+    FaAddressBook,
+    FaAddressCard,
 } from "react-icons/fa6";
 
 export default function Footer() {
@@ -42,9 +44,14 @@ export default function Footer() {
                                 <FaClock className="mt-1 text-cyan-400 text-lg shrink-0" />
                                 <span>
                                     شنبه تا پنجشنبه
-                                    <br />
+                                    
                                     ۸:۰۰ الی ۱۸:۰۰
                                 </span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <FaAddressBook className="mt-1 text-cyan-400 text-lg shrink-0" />
+                                آدرس دفتر قزوین - ملاصدرا - خیابان میرداماد - نبش بن بست پویا - پلاک 45
+                                شماره تماس موبایل 09127855049
                             </li>
                         </ul>
                     </div>
