@@ -133,7 +133,7 @@ export default function Home() {
       <main className="flex w-full h-full flex-col items-center  text-3xl  bg-gradient-to-tr from-[#0F172A] via-[#0e1e42] to-[#155E75]">
 
         <h1 className=" mt-20 text-white font-bold text-4xl  font-rokh"> آموزشگاه یاب</h1>
-        <Link className="text-xl bg-[#0F172A] text-cyan-300 py-4 px-5 my-10 rounded-xl" href={`/login`}>برای ورود کیلیک کنید</Link>
+        <Link className="text-xl text-[#0F172A] bg-cyan-300 py-4 px-5 my-10 rounded-xl" href={`/login`}>برای ورود کیلیک کنید</Link>
       </main>
 
     </div>
