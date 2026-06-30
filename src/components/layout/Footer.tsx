@@ -21,10 +21,10 @@ export default function Footer() {
                         </h3>
 
                         <ul className="space-y-5">
-                            <li className="flex items-start gap-3">
+                            {/* <li className="flex items-start gap-3">
                                 <FaLocationDot className="mt-1 text-cyan-400 text-lg shrink-0" />
                                 <span>تهران، میدان آزادی، خیابان نمونه، پلاک ۵۶</span>
-                            </li>
+                            </li> */}
 
                             <li className="flex items-center gap-3">
                                 <FaPhone className="text-cyan-400 text-lg shrink-0" />
@@ -49,7 +49,7 @@ export default function Footer() {
                                 </span>
                             </li>
                             <li className="flex items-start gap-3">
-                                <FaAddressBook className="mt-1 text-cyan-400 text-lg shrink-0" />
+                                <FaLocationDot className="mt-1 text-cyan-400 text-lg shrink-0" />
                                 آدرس دفتر قزوین - ملاصدرا - خیابان میرداماد - نبش بن بست پویا - پلاک 45
                                 شماره تماس موبایل 09127855049
                             </li>
