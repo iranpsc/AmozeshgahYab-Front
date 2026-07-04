@@ -1,21 +1,39 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 import api from "@/services/api";
 import { logout } from "@/services/auth";
 
-interface InstituteProfile {
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import Loading from "@/components/dashboard/LoadingScreen";
+import ProfileCard from "@/components/dashboard/ProfileCard";
+import CreateProfileForm from "@/components/dashboard/CreateProfileForm";
+import EditProfileForm from "@/components/dashboard/EditProfileForm";
+import type { InstituteBranding, InstituteProfile } from "@/services/institute";
+// import Button from "@/components/form/Button";
+import CreateBrandingForm from "@/components/dashboard/CreateBrandingForm";
+import BrandingCard from "@/components/dashboard/BrandingCard";
+import EditBrandingForm from "@/components/dashboard/EditBrandingForm";
+import DashboardStepper from "@/components/dashboard/DashboardStepper";
+import CompletedDashboard from "@/components/dashboard/CompletedDashboard";
+interface Province {
   id: number;
-  institute_name: string;
-  mobile_number: string;
-  landline_phone: string;
-  address: string;
-  postal_code: string;
-  status: string;
+  name: string;
 }
+
+interface City {
+  id: number;
+  name: string;
+  province: number;
+}
+interface Course {
+  id: number;
+  title: string;
+}
+
 
 export default function Dashboard() {
   const router = useRouter();
@@ -25,23 +43,63 @@ export default function Dashboard() {
   const [profile, setProfile] =
     useState<InstituteProfile | null>(null);
 
-  const [error, setError] =
-    useState<string | null>(null);
+  const [hasProfile, setHasProfile] =
+    useState(false);
+
+  const [isEditing, setIsEditing] =
+    useState(false);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [isCreatingBranding, setIsCreatingBranding] =
+    useState(false);
+  const [branding, setBranding] =
+    useState<InstituteBranding | null>(null);
+
+  const [hasBranding, setHasBranding] =
+    useState(false);
+
+  const [isBrandingEditing, setIsBrandingEditing] =
+    useState(false);
+  const completed =
+    profile?.status === "approved" &&
+    branding?.status === "approved";
 
   useEffect(() => {
-    void loadProfile();
+    void Promise.all([
+      loadProfile(),
+      loadBranding(),
+      loadLocationData(
+
+      ),
+    ]);
   }, []);
+  async function loadLocationData() {
+    const [provinceRes, cityRes, courseRes] =
+      await Promise.all([
+        api.get<Province[]>("/academy/provinces/"),
+        api.get<City[]>("/academy/cities/"),
+        api.get<Course[]>("/academy/courses/"),
+      ]);
+
+
+    setProvinces(provinceRes.data);
+    setCities(cityRes.data);
+    setCourses(courseRes.data);
+  }
+
 
   async function loadProfile() {
     try {
       setLoading(true);
-      setError(null);
 
-      const res = await api.get<InstituteProfile>(
-        "/academy/institute/profile/"
-      );
+      const res =
+        await api.get<InstituteProfile>(
+          "/academy/institute/profile/"
+        );
 
       setProfile(res.data);
+      setHasProfile(true);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 401) {
@@ -50,13 +108,10 @@ export default function Dashboard() {
         }
 
         if (err.response?.status === 400) {
-          setError("پروفایل آموزشگاه هنوز ایجاد نشده است.");
+          setHasProfile(false);
+          setProfile(null);
           return;
         }
-
-        setError("خطا در دریافت اطلاعات.");
-      } else {
-        setError("خطای غیرمنتظره‌ای رخ داده است.");
       }
 
       console.error(err);
@@ -64,155 +119,198 @@ export default function Dashboard() {
       setLoading(false);
     }
   }
+  async function loadBranding() {
+    try {
+      const res =
+        await api.get<InstituteBranding>(
+          "/academy/institute/branding/"
+        );
+
+      setBranding(res.data);
+      setHasBranding(true);
+
+    } catch (err) {
+      if (
+        axios.isAxiosError(err) &&
+        err.response?.status === 400
+      ) {
+        setBranding(null);
+        setHasBranding(false);
+        return;
+      }
+
+      console.error(err);
+    }
+  }
 
   async function handleLogout() {
+    await logout();
+    router.replace("/login");
+  }
+
+  async function createProfile(data: {
+
+    institute_name: string;
+    mobile_number: string;
+    landline_phone: string;
+    province: number;
+    city: number;
+    address: string;
+    postal_code: string;
+  }) {
     try {
-      await logout();
+      const res = await api.post(
+        "/academy/institute/profile/",
+        data
+      );
+
+      setProfile(res.data);
+      setHasProfile(true);
     } catch (err) {
-      console.error(err);
-    } finally {
-      router.replace("/login");
+      throw err;
+    }
+  }
+  async function editProfile(data: {
+    institute_name: string;
+    mobile_number: string;
+    landline_phone: string;
+    province: number;
+    city: number;
+    address: string;
+    postal_code: string;
+  }) {
+    await api.put(
+      "/academy/institute/profile/",
+      data
+    );
+
+    await loadProfile();
+
+    setIsEditing(false);
+  }
+  async function editBranding(data: {
+    courses: number[];
+  }) {
+    await api.put(
+      "/academy/institute/branding/",
+      data
+    );
+
+    await loadBranding();
+
+    setIsBrandingEditing(false);
+  }
+  async function createBranding(data: {
+    courses: number[];
+  }) {
+    try {
+      await api.post(
+        "/academy/institute/branding/",
+        data
+      );
+
+      await loadBranding();
+
+      setIsCreatingBranding(false);
+
+    } catch (err) {
+      throw err;
     }
   }
 
   if (loading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-100">
-        <div className="rounded-2xl bg-white px-8 py-6 shadow">
-          در حال بارگذاری...
-        </div>
-      </main>
-    );
+    return <Loading />;
   }
-
-  if (error) {
+  if (completed && profile && branding) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-100 p-6">
-        <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow">
-          <h1 className="mb-4 text-2xl font-bold text-red-600">
-            خطا
-          </h1>
-
-          <p className="mb-6 text-gray-600">
-            {error}
-          </p>
-
-          <div className="flex gap-5">
-            <button
-              onClick={() => void loadProfile()}
-              className="rounded-lg bg-blue-600 px-5 py-3 text-white transition hover:bg-blue-700"
-            >
-              تلاش مجدد
-            </button>
-            <button
-              onClick={handleLogout}
-              className="rounded-lg bg-red-500 px-5 py-2 text-white transition cursor-pointer hover:bg-red-600"
-            >
-              خروج
-            </button>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (!profile) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-100">
-        <div className="rounded-2xl bg-white px-8 py-6 shadow">
-          اطلاعاتی برای نمایش وجود ندارد.
-        </div>
-      </main>
+      <div>
+        <DashboardHeader
+          onLogout={handleLogout} title={"آموزشگاه یاب"} />
+        <CompletedDashboard
+          profile={profile}
+          branding={branding}
+          courses={courses}
+        />
+      </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 p-6">
-      <div className="mx-auto max-w-5xl">
+    <main className="min-h-screen  bg-cyan-50">
+      <DashboardHeader
+        onLogout={handleLogout} title={"آموزشگاه یاب"} />
 
-        <div className="mb-6 flex items-center justify-between rounded-2xl bg-white p-6 shadow-sm">
-          <div>
-            <h1 className="text-3xl font-bold">
-              داشبورد
-            </h1>
+      <div className="mx-auto max-w-6xl p-6">
 
-            <p className="mt-2 text-gray-500">
-              خوش آمدید
-            </p>
-          </div>
+        <DashboardStepper
+          profile={profile}
+          branding={branding}
+        />
+        {!hasProfile && (
+          <CreateProfileForm
+            provinces={provinces}
+            cities={cities}
+            onSubmit={createProfile}
+          />
+        )}
 
-          <button
-            onClick={handleLogout}
-            className="rounded-lg bg-red-500 px-5 py-2 text-white transition cursor-pointer hover:bg-red-600"
-          >
-            خروج
-          </button>
-        </div>
+        {hasProfile &&
+          profile &&
+          !isEditing && profile?.status != "approved" && (
+            <ProfileCard
+              profile={profile}
+              onEdit={() =>
+                setIsEditing(true)
+              }
+            />
+          )}
 
-        <div className="grid gap-5 md:grid-cols-2">
+        {hasProfile &&
+          profile &&
+          isEditing && profile?.status != "approved" && (
+            <EditProfileForm
+              profile={profile}
+              provinces={provinces}
+              cities={cities}
+              onSubmit={editProfile}
+              onCancel={() => setIsEditing(false)}
+            />
+          )}
+        {profile?.status === "approved" &&
+          !hasBranding &&
+          (
+            <CreateBrandingForm
+              courses={courses}
+              onSubmit={createBranding}
+            />
+          )}
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="mb-2 text-sm text-gray-500">
-              نام آموزشگاه
-            </p>
+        {hasBranding &&
+          branding &&
+          !isBrandingEditing && (
+            <BrandingCard
+              branding={branding}
+              courses={courses}
+              onEdit={() => setIsBrandingEditing(true)}
+            />
+          )}
+        {hasBranding &&
+          branding &&
+          isBrandingEditing && (
+            <EditBrandingForm
+              branding={branding}
+              courses={courses}
+              onSubmit={editBranding}
+              onCancel={() =>
+                setIsBrandingEditing(false)
+              }
+            />
+          )}
 
-            <p className="text-xl font-bold">
-              {profile.institute_name}
-            </p>
-          </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="mb-2 text-sm text-gray-500">
-              شماره موبایل
-            </p>
-
-            <p className="text-xl font-bold">
-              {profile.mobile_number}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="mb-2 text-sm text-gray-500">
-              تلفن ثابت
-            </p>
-
-            <p className="text-xl font-bold">
-              {profile.landline_phone}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="mb-2 text-sm text-gray-500">
-              کد پستی
-            </p>
-
-            <p className="text-xl font-bold">
-              {profile.postal_code}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="mb-2 text-sm text-gray-500">
-              وضعیت
-            </p>
-
-            <p className="text-xl font-bold">
-              {profile.status}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm md:col-span-2">
-            <p className="mb-2 text-sm text-gray-500">
-              آدرس
-            </p>
-
-            <p className="text-lg leading-8">
-              {profile.address}
-            </p>
-          </div>
-
-        </div>
       </div>
     </main>
   );
+
 }
+
