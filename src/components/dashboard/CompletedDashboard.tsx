@@ -17,12 +17,17 @@ interface Props {
   profile: InstituteProfile;
   branding: InstituteBranding;
   courses: Course[];
+
+  onEditProfile: () => void;
+  onEditBranding: () => void;
 }
 
 export default function CompletedDashboard({
-  profile,
+ profile,
   branding,
   courses,
+  onEditProfile,
+  onEditBranding,
 }: Props) {
   return (
     <div className="space-y-8 p-5">
@@ -58,13 +63,27 @@ export default function CompletedDashboard({
 
       <div className="grid gap-8 xl:grid-cols-2">
 
-        <ProfileSummaryCard profile={profile} />
-
-        <BrandingSummaryCard
+<div>
+          <ProfileSummaryCard profile={profile} />
+  <button
+    onClick={onEditProfile}
+    className="rounded-xl border mt-5 w-full border-slate-300 bg-white px-5 py-3 font-medium text-slate-700 transition hover:bg-slate-50 cursor-pointer"
+  >
+    ویرایش اطلاعات آموزشگاه
+  </button>
+</div>
+<div>
+          <BrandingSummaryCard
           branding={branding}
           courses={courses}
         />
-
+  <button
+    onClick={onEditBranding}
+    className="rounded-xl border mt-5 w-full border-slate-300 bg-white px-5 py-3 font-medium text-slate-700 transition hover:bg-slate-50 cursor-pointer"
+  >
+    ویرایش برند آموزشگاه
+  </button>
+</div>
       </div>
 
     </div>

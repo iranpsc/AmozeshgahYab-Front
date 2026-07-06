@@ -55,12 +55,12 @@ function Step({
   const style = colors[state];
 
   return (
-    <div className="flex flex-1 items-center ">
+    <div className="flex flex-1 items-center">
 
       <div className="flex flex-col items-center">
 
         <div
-          className={`flex w-10 h-10 lg:h-12 lg:w-12 items-center justify-center rounded-full border-2 text-lg font-bold transition ${style.circle}`}
+          className={`flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-full border-2 text-lg font-bold transition ${style.circle}`}
         >
           {style.icon}
         </div>
@@ -73,9 +73,10 @@ function Step({
 
       {!last && (
         <div
-          className={`mx-3 hidden lg:block h-1 flex-1 rounded-full ${style.line}`}
+          className={`mx-3 hidden h-1 flex-1 rounded-full lg:block ${style.line}`}
         />
       )}
+
     </div>
   );
 }
@@ -92,49 +93,65 @@ export default function DashboardStepper({
     "waiting",
   ];
 
-  // مرحله ۱
+  // Step 1 : ثبت اطلاعات آموزشگاه
   if (profile) {
     steps[0] = "done";
+  } else {
+    steps[0] = "current";
   }
 
-  // مرحله ۲
-  if (profile?.status === "pending")
+  // Step 2 : ثبت برند
+  if (profile && !branding) {
     steps[1] = "current";
-
-  if (profile?.status === "approved")
-    steps[1] = "done";
-
-  if (profile?.status === "rejected")
-    steps[1] = "rejected";
-
-  // مرحله ۳
-  if (
-    profile?.status === "approved" &&
-    !branding
-  ) {
-    steps[2] = "current";
   }
 
   if (branding) {
+    steps[1] = "done";
+  }
+
+  // Step 3 : بررسی پروفایل
+  if (branding && profile?.status === "pending") {
+    steps[2] = "current";
+  }
+
+  if (profile?.status === "approved") {
     steps[2] = "done";
   }
 
-  // مرحله ۴
-  if (branding?.status === "pending")
+  if (profile?.status === "rejected") {
+    steps[2] = "rejected";
+  }
+
+  // Step 4 : بررسی برند
+  if (
+    profile?.status === "approved" &&
+    branding?.status === "pending"
+  ) {
     steps[3] = "current";
+  }
 
-  if (branding?.status === "approved")
+  if (branding?.status === "approved") {
     steps[3] = "done";
+  }
 
-  if (branding?.status === "rejected")
+  if (branding?.status === "rejected") {
     steps[3] = "rejected";
+  }
 
-  // مرحله ۵
-  if (branding?.status === "approved")
+  // Step 5 : تکمیل حساب
+  if (
+    profile?.status === "approved" &&
+    branding?.status === "approved"
+  ) {
     steps[4] = "done";
+  } else if (
+    branding?.status === "approved"
+  ) {
+    steps[4] = "current";
+  }
 
   return (
-    <div className="mb-8 rounded-3xl border bg-white p-8 shadow-sm mx-auto">
+    <div className="mx-auto mb-8 rounded-3xl border bg-white p-8 shadow-sm">
 
       <div className="mb-8">
 
@@ -143,7 +160,7 @@ export default function DashboardStepper({
         </h2>
 
         <p className="mt-2 text-slate-500">
-          وضعیت فعلی آموزشگاه شما
+          وضعیت تکمیل حساب کاربری شما
         </p>
 
       </div>
@@ -151,27 +168,27 @@ export default function DashboardStepper({
       <div className="flex items-start">
 
         <Step
-          title="ثبت اطلاعات"
+          title="ثبت آموزشگاه"
           state={steps[0]}
         />
 
         <Step
-          title="تایید اطلاعات"
+          title="ثبت برند"
           state={steps[1]}
         />
 
         <Step
-          title="ثبت برند"
+          title="بررسی آموزشگاه"
           state={steps[2]}
         />
 
         <Step
-          title="تایید برند"
+          title="بررسی برند"
           state={steps[3]}
         />
 
         <Step
-          title="تکمیل"
+          title="تکمیل حساب"
           state={steps[4]}
           last
         />

@@ -188,59 +188,146 @@ export default function Dashboard() {
 
     setIsEditing(false);
   }
-  async function editBranding(data: {
-    courses: number[];
-  }) {
-    await api.put(
+async function editBranding(data: {
+  courses: number[];
+  logo: File | null;
+  banner: File | null;
+}) {
+  const formData = new FormData();
+
+  data.courses.forEach((course) => {
+    formData.append("courses", String(course));
+  });
+
+  if (data.logo) {
+    formData.append("logo", data.logo);
+  }
+
+  if (data.banner) {
+    formData.append("banner", data.banner);
+  }
+
+  await api.put(
+    "/academy/institute/branding/",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  await loadBranding();
+
+  setIsBrandingEditing(false);
+}
+async function createBranding(data: {
+  courses: number[];
+  logo: File | null;
+  banner: File | null;
+}) {
+  try {
+    const formData = new FormData();
+
+    data.courses.forEach((course) => {
+      formData.append("courses", String(course));
+    });
+
+    if (data.logo) {
+      formData.append("logo", data.logo);
+    }
+
+    if (data.banner) {
+      formData.append("banner", data.banner);
+    }
+
+    await api.post(
       "/academy/institute/branding/",
-      data
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
 
     await loadBranding();
 
-    setIsBrandingEditing(false);
+    setIsCreatingBranding(false);
+  } catch (err) {
+    throw err;
   }
-  async function createBranding(data: {
-    courses: number[];
-  }) {
-    try {
-      await api.post(
-        "/academy/institute/branding/",
-        data
-      );
-
-      await loadBranding();
-
-      setIsCreatingBranding(false);
-
-    } catch (err) {
-      throw err;
-    }
-  }
+}
 
   if (loading) {
     return <Loading />;
   }
-  if (completed && profile && branding) {
+if (completed && profile && branding) {
+  if (isEditing) {
     return (
-      <div>
+      <main className="min-h-screen bg-cyan-50">
         <DashboardHeader
-          onLogout={handleLogout} title={"آموزشگاه یاب"} />
-        <CompletedDashboard
-          profile={profile}
-          branding={branding}
-          courses={courses}
+          onLogout={handleLogout}
+          title="آموزشگاه یاب"
         />
-      </div>
+
+        <div className="mx-auto max-w-6xl p-6">
+          <EditProfileForm
+            profile={profile}
+            provinces={provinces}
+            cities={cities}
+            onSubmit={editProfile}
+            onCancel={() => setIsEditing(false)}
+          />
+        </div>
+      </main>
     );
   }
+
+  if (isBrandingEditing) {
+    return (
+      <main className="min-h-screen bg-cyan-50">
+        <DashboardHeader
+          onLogout={handleLogout}
+          title="آموزشگاه یاب"
+        />
+
+        <div className="mx-auto max-w-6xl p-6">
+          <EditBrandingForm
+            branding={branding}
+            courses={courses}
+            onSubmit={editBranding}
+            onCancel={() => setIsBrandingEditing(false)}
+          />
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-cyan-50">
+      <DashboardHeader
+        onLogout={handleLogout}
+        title="آموزشگاه یاب"
+      />
+
+      <CompletedDashboard
+        profile={profile}
+        branding={branding}
+        courses={courses}
+        onEditProfile={() => setIsEditing(true)}
+        onEditBranding={() => setIsBrandingEditing(true)}
+      />
+    </main>
+  );
+}
 
   return (
     <main className="min-h-screen  bg-cyan-50">
       <DashboardHeader
         onLogout={handleLogout} title={"آموزشگاه یاب"} />
 
-      <div className="mx-auto max-w-6xl p-6">
+      <div className="mx-auto max-w-6xl p-6 space-y-5">
 
         <DashboardStepper
           profile={profile}
@@ -256,18 +343,15 @@ export default function Dashboard() {
 
         {hasProfile &&
           profile &&
-          !isEditing && profile?.status != "approved" && (
+          !isEditing && (
             <ProfileCard
               profile={profile}
-              onEdit={() =>
-                setIsEditing(true)
-              }
+              onEdit={() => setIsEditing(true)}
             />
           )}
-
         {hasProfile &&
           profile &&
-          isEditing && profile?.status != "approved" && (
+          isEditing && (
             <EditProfileForm
               profile={profile}
               provinces={provinces}
@@ -276,9 +360,10 @@ export default function Dashboard() {
               onCancel={() => setIsEditing(false)}
             />
           )}
-        {profile?.status === "approved" &&
+        {hasProfile &&
+          profile &&
           !hasBranding &&
-          (
+          !isCreatingBranding && (
             <CreateBrandingForm
               courses={courses}
               onSubmit={createBranding}

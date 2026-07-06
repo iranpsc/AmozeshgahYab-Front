@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import FormField from "@/components/form/FormField";
 import Button from "@/components/form/Button";
+import useFormErrors from "@/hooks/useFormErrors";
+
 
 interface Course {
   id: number;
@@ -15,6 +17,8 @@ interface Props {
 
   onSubmit?: (data: {
     courses: number[];
+    logo: File | null;
+    banner: File | null;
   }) => Promise<void>;
 }
 
@@ -22,9 +26,27 @@ export default function CreateBrandingForm({
   courses,
   onSubmit,
 }: Props) {
-  const [selectedCourses, setSelectedCourses] = useState<number[]>([]);
-  const [loading, setLoading] = useState(false);
+  const {
+  errors,
+  clearErrors,
+  setBackendErrors,
+} = useFormErrors();
+  const [step, setStep] = useState(1);
 
+  const [selectedCourses, setSelectedCourses] =
+    useState<number[]>([]);
+
+  const [logo, setLogo] =
+    useState<File | null>(null);
+
+  const [banner, setBanner] =
+    useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+const logoInputRef =
+  useRef<HTMLInputElement>(null);
+
+const bannerInputRef =
+  useRef<HTMLInputElement>(null);
   function toggleCourse(id: number) {
     setSelectedCourses((prev) =>
       prev.includes(id)
@@ -37,9 +59,13 @@ export default function CreateBrandingForm({
     e: React.FormEvent<HTMLFormElement>
   ) {
     e.preventDefault();
-if (selectedCourses.length === 0) {
-  return;
-}
+
+    clearErrors();
+
+    if (selectedCourses.length === 0) {
+      return;
+    }
+
     if (!onSubmit) return;
 
     try {
@@ -47,7 +73,12 @@ if (selectedCourses.length === 0) {
 
       await onSubmit({
         courses: selectedCourses,
+        logo,
+        banner,
       });
+
+    } catch (err) {
+      setBackendErrors(err);
     } finally {
       setLoading(false);
     }
@@ -56,15 +87,16 @@ if (selectedCourses.length === 0) {
   return (
     <form
       onSubmit={submit}
-      className="rounded-2xl bg-white p-8 shadow"
+      className="rounded-2xl bg-white p-8 shadow space-y-6"
     >
-      <h2 className="mb-8 text-3xl font-bold">
+      <h2 className="mb-2 text-3xl font-bold">
         ثبت برند آموزشگاه
       </h2>
 
       <FormField
         label="دوره‌های آموزشی"
         required
+        error={errors.courses}
       >
         <div className="grid gap-3 md:grid-cols-2">
           {courses.map((course) => (
@@ -85,7 +117,140 @@ if (selectedCourses.length === 0) {
           ))}
         </div>
       </FormField>
+<FormField
+  label="لوگو آموزشگاه"
+  required
+  error={errors.logo}
+>
 
+  <input
+    ref={logoInputRef}
+    type="file"
+    accept="image/*"
+    className="hidden"
+    onChange={(e) =>
+      setLogo(e.target.files?.[0] ?? null)
+    }
+  />
+
+  {!logo && (
+    <Button
+      type="button"
+      onClick={() =>
+        logoInputRef.current?.click()
+      }
+    >
+      انتخاب لوگو
+    </Button>
+  )}
+
+  {logo && (
+    <div className="space-y-4">
+
+      <img
+        src={URL.createObjectURL(logo)}
+        alt=""
+        className="h-32 w-32 rounded-xl border object-cover"
+      />
+
+      <div className="flex gap-3">
+
+        <Button
+          type="button"
+          onClick={() =>
+            logoInputRef.current?.click()
+          }
+        >
+          تغییر لوگو
+        </Button>
+
+        <Button
+          type="button"
+          className="bg-red-100 text-red-600 hover:bg-red-200"
+          onClick={() => {
+            setLogo(null);
+
+            if (logoInputRef.current) {
+              logoInputRef.current.value = "";
+            }
+          }}
+        >
+          حذف
+        </Button>
+
+      </div>
+
+    </div>
+  )}
+
+</FormField>
+<FormField
+  label="بنر آموزشگاه"
+  required
+  error={errors.banner}
+>
+
+  <input
+    ref={bannerInputRef}
+    type="file"
+    accept="image/*"
+    className="hidden"
+    onChange={(e) =>
+      setBanner(e.target.files?.[0] ?? null)
+    }
+  />
+
+  {!banner && (
+    <Button
+      type="button"
+      onClick={() =>
+        bannerInputRef.current?.click()
+      }
+    >
+      انتخاب بنر
+    </Button>
+  )}
+
+  {banner && (
+    <div className="space-y-4">
+
+      <img
+        src={URL.createObjectURL(banner)}
+        alt=""
+        className="h-52 w-full rounded-xl border object-cover"
+      />
+
+      <div className="flex gap-3">
+
+        <Button
+          type="button"
+          onClick={() =>
+            bannerInputRef.current?.click()
+          }
+        >
+          تغییر بنر
+        </Button>
+
+        <Button
+          type="button"
+          className="bg-red-100 text-red-600 hover:bg-red-200"
+          onClick={() => {
+            setBanner(null);
+
+            if (bannerInputRef.current) {
+              bannerInputRef.current.value = "";
+            }
+          }}
+        >
+          حذف
+        </Button>
+
+      </div>
+
+    </div>
+  )}
+
+</FormField>
       <div className="mt-8">
         <Button
           type="submit"

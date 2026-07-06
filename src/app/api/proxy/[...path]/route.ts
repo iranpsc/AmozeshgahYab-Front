@@ -46,11 +46,13 @@ req.cookies.get("refresh")?.value;
 
 
 
-const headers:any = {
+const headers: Record<string, string> = {};
 
- "Content-Type":"application/json"
+const contentType = req.headers.get("content-type");
 
-};
+if (contentType) {
+  headers["Content-Type"] = contentType;
+}
 
 
 
@@ -65,25 +67,20 @@ if(access){
 
 
 
-let body:any = undefined;
+let body: BodyInit | undefined;
 
+if (
+  req.method !== "GET" &&
+  req.method !== "DELETE"
+) {
+  const contentType =
+    req.headers.get("content-type") ?? "";
 
-
-if(
- req.method !== "GET" &&
- req.method !== "DELETE"
-){
-
- const text =
- await req.text();
-
-
- if(text){
-
-  body = text;
-
- }
-
+  if (contentType.includes("multipart/form-data")) {
+    body = await req.arrayBuffer();
+  } else {
+    body = await req.text();
+  }
 }
 
 
