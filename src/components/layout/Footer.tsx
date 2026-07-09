@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaMailBulk } from "react-icons/fa";
 import {
     FaLocationDot,
     FaPhone,
@@ -6,6 +7,8 @@ import {
     FaMobileScreenButton,
     FaAddressBook,
     FaAddressCard,
+    FaMessage,
+    FaMailchimp,
 } from "react-icons/fa6";
 
 export default function Footer() {
@@ -39,6 +42,13 @@ export default function Footer() {
                                     تلفن همراه: 09120820120
                                 </a>
                             </li>
+                                                        <li className="flex items-center gap-3">
+                                <FaMailBulk className="text-cyan-400 text-lg shrink-0" />
+                                <a href="mailto:info@amozeshgahyab.ir" className="hover:text-white transition-colors">
+                                    
+info@amozeshgahyab.ir
+                                </a>
+                            </li>
 
                             <li className="flex items-start gap-3">
                                 <FaClock className="mt-1 text-cyan-400 text-lg shrink-0" />
@@ -57,16 +67,23 @@ export default function Footer() {
                     </div>
 
                     {/* About */}
-                    <div>
+                    <div className="flex flex-col">
                         <h3 className="mb-6 text-2xl font-bold text-cyan-400">
                             درباره سامانه آموزشگاه یاب
                         </h3>
 
-                        <p className="leading-8 text-gray-400">
+                        <p className="leading-8 text-gray-400 mb-6">
                             سامانه آموزشگاه یک سیستم مدیریت آموزشی مدرن است که برای
                             مدیریت ثبت‌نام، کلاس‌ها، اساتید و هنرجویان طراحی شده و
                             امکانات کاملی برای مدیریت فرآیندهای آموزشی فراهم می‌کند.
                         </p>
+                        <div className="flex items-center justify-center ">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=754796&Code=7TnLHQ7fELIsmQDvWjxzsPjzf4rCXYXj'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=754796&Code=7TnLHQ7fELIsmQDvWjxzsPjzf4rCXYXj' alt='' style='cursor:pointer' code='7TnLHQ7fELIsmQDvWjxzsPjzf4rCXYXj'></a>`,
+                    }}
+                  />
+                </div>
                     </div>
 
                 </div>
