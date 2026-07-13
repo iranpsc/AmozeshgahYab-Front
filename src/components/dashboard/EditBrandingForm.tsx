@@ -8,7 +8,7 @@ import Button from "@/components/form/Button";
 import FormField from "@/components/form/FormField";
 
 import type { InstituteBranding } from "@/services/institute";
-
+import ImageCropperModal from "@/components/ImageCropper/ImageCropperModal";
 interface Course {
   id: number;
   title: string;
@@ -51,6 +51,14 @@ const [logo, setLogo] =
 
 const [banner, setBanner] =
   useState<File | null>(null);
+  const [cropOpen, setCropOpen] =
+  useState(false);
+
+const [cropImage, setCropImage] =
+  useState<string | null>(null);
+
+const [cropType, setCropType] =
+  useState<"logo" | "banner">("logo");
   const [selectedCourses, setSelectedCourses] =
     useState<number[]>(branding.courses);
 
@@ -61,7 +69,14 @@ const [banner, setBanner] =
         : [...prev, id]
     );
   }
-
+function openCropper(
+  file: File,
+  type: "logo" | "banner"
+) {
+  setCropType(type);
+  setCropImage(URL.createObjectURL(file));
+  setCropOpen(true);
+}
 async function submit(
   e: React.FormEvent<HTMLFormElement>
 ) {
@@ -130,9 +145,13 @@ async function submit(
     type="file"
     accept="image/*"
     className="hidden"
-    onChange={(e) =>
-      setLogo(e.target.files?.[0] ?? null)
-    }
+    onChange={(e) => {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  openCropper(file, "logo");
+}}
   />
 
   {!logo ? (
@@ -212,9 +231,13 @@ async function submit(
     type="file"
     accept="image/*"
     className="hidden"
-    onChange={(e) =>
-      setBanner(e.target.files?.[0] ?? null)
-    }
+onChange={(e) => {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  openCropper(file, "banner");
+}}
   />
 
   {!banner ? (
@@ -224,7 +247,7 @@ async function submit(
       {branding.banner && (
         <img
           src={branding.banner}
-          className="h-56 w-full rounded-xl border object-cover"
+          className="h-100 max-w-300 w-full rounded-xl border object-cover"
           alt=""
         />
       )}
@@ -303,6 +326,63 @@ async function submit(
           انصراف
         </Button>
       </div>
+      <ImageCropperModal
+  open={cropOpen}
+  image={cropImage}
+  title={
+    cropType === "logo"
+      ? "برش لوگو"
+      : "برش بنر"
+  }
+  cropShape={
+    cropType === "logo"
+      ? "round"
+      : "rect"
+  }
+  aspect={
+    cropType === "logo"
+      ? 1
+      : 3
+  }
+  width={
+    cropType === "logo"
+      ? 512
+      : 1200
+  }
+  height={
+    cropType === "logo"
+      ? 512
+      : 400
+  }
+  outputType={
+    cropType === "logo"
+      ? "png"
+      : "jpeg"
+  }
+  onClose={() => {
+    setCropOpen(false);
+    setCropImage(null);
+  }}
+  onComplete={(file) => {
+    if (cropType === "logo") {
+      setLogo(file);
+    } else {
+      setBanner(file);
+    }
+
+    setCropOpen(false);
+
+    setCropImage(null);
+
+    if (logoInputRef.current) {
+      logoInputRef.current.value = "";
+    }
+
+    if (bannerInputRef.current) {
+      bannerInputRef.current.value = "";
+    }
+  }}
+/>
     </form>
   );
 }

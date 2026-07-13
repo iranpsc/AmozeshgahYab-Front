@@ -5,10 +5,10 @@ import {
     FaPhone,
     FaClock,
     FaMobileScreenButton,
-    FaAddressBook,
-    FaAddressCard,
-    FaMessage,
-    FaMailchimp,
+    // FaAddressBook,
+    // FaAddressCard,
+    // FaMessage,
+    // FaMailchimp,
 } from "react-icons/fa6";
 
 export default function Footer() {
