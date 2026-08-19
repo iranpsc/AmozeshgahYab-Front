@@ -1,4 +1,3 @@
-// src/fonts/localFonts.js
 import localFont from 'next/font/local';
 
 // فونت آذر مهر با همه وزن‌ها
@@ -12,11 +11,15 @@ export const azarMehr = localFont({
     { path: './AzarMehr-ExtraBold.woff2', weight: '800', style: 'normal' },
   ],
   variable: '--font-azarMehr',
-  display: 'swap', // این گزینه باعث می‌شود متن بدون تأخیر رندر شود
-   fallback: ['system-ui', 'Tahoma', 'sans-serif'],
+  display: 'swap', // متن بدون تأخیر (فوراً با fallback) رندر می‌شه
+  // ۶ فایل با هم preload نمی‌شن؛ چون display:swap داریم، preload لازم نیست
+  // و فقط داشت با CSS اصلی رقابت می‌کرد. مرورگر با اولویت عادی، وزنی که
+  // واقعاً تو صفحه استفاده شده رو خودش fetch می‌کنه.
+  preload: false,
+  fallback: ['system-ui', 'Tahoma', 'sans-serif'],
 });
 
-// فونت رخ (فقط وزن Bold)
+// فونت رخ (فقط وزن Bold) — یه فایل کوچیکه، preload موندنش هزینه‌ای نداره
 export const rokh = localFont({
   src: [
     { path: './Rokh-Bold.woff2', weight: '700', style: 'normal' },

@@ -1,30 +1,220 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
+
+  /* ===== Base ===== */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+
+  --surface: #f8fafc;        /* پس‌زمینه بخش‌های داخلی، مثل باکس‌های آمار */
+  --surface-2: #f1f5f9;      /* یک لایه تیره‌تر، هاور و... */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #14b8ac;
+
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  /* ===== Brand / Primary (فیروزه‌ای) ===== */
+  --primary: #14b8ac;
+  --primary-hover: #0e9c92;
+  --primary-foreground: #ffffff;
+  --primary-light: #e6fbf8;   /* پس‌زمینه ملایم، بج‌ها */
+
+  /* ===== Secondary (سرمه‌ای هدر/هیرو تیره) ===== */
+  --secondary: #0b1220;
+  --secondary-foreground: #ffffff;
+
+  /* ===== Accent (طلایی امتیاز ستاره) ===== */
+  --accent: #f59e0b;
+  --accent-foreground: #0f172a;
+
+  /* ===== Semantic ===== */
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #0f172a;
+  --danger: #ef4444;
+  --danger-foreground: #ffffff;
+  --info: #3b82f6;
+  --info-foreground: #ffffff;
+
+  /* ===== رنگ‌های دسته‌بندی (آیکون‌های موضوعی) ===== */
+  --category-blue: #3b82f6;
+  --category-blue-bg: #eff6ff;
+  --category-purple: #a855f7;
+  --category-purple-bg: #faf5ff;
+  --category-orange: #f97316;
+  --category-orange-bg: #fff7ed;
+  --category-green: #22c55e;
+  --category-green-bg: #f0fdf4;
+  --category-red: #ef4444;
+  --category-red-bg: #fef2f2;
+  --category-slate: #64748b;
+  --category-slate-bg: #f8fafc;
+  --category-indigo: #6366f1;
+  --category-indigo-bg: #eef2ff;
+  --category-teal: #14b8ac;
+  --category-teal-bg: #e6fbf8;
+
+  /* ===== Radius ===== */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ===== Shadow ===== */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 30px -5px rgb(0 0 0 / 0.12);
+}
+
+.dark {
+  color-scheme: dark;
+
+    /* ===== Base ===== */
+    --background: #0a1220;
+    --foreground: #e8edf5;
+
+    --surface: #0e1a2c;
+    --surface-2: #14243a;
+    --card: #101d30;
+    --card-foreground: #e8edf5;
+
+    --border: #1e2f47;
+    --input: #1e2f47;
+    --ring: #2dd4c8;
+
+    --muted: #14243a;
+    --muted-foreground: #8ea0b8;
+
+    /* ===== Brand / Primary (روشن‌تر برای کنتراست بهتر روی تیره) ===== */
+    --primary: #2dd4c8;
+    --primary-hover: #4de3d8;
+    --primary-foreground: #04211d;
+    --primary-light: #0f2b28;
+
+    /* ===== Secondary ===== */
+    --secondary: #050b14;
+    --secondary-foreground: #ffffff;
+
+    /* ===== Accent ===== */
+    --accent: #fbbf24;
+    --accent-foreground: #0f172a;
+
+    /* ===== Semantic ===== */
+    --success: #34d399;
+    --success-foreground: #04211d;
+    --warning: #fbbf24;
+    --warning-foreground: #1f1400;
+    --danger: #f87171;
+    --danger-foreground: #2b0a0a;
+    --info: #60a5fa;
+    --info-foreground: #0a1a33;
+
+    /* ===== رنگ‌های دسته‌بندی (تیره‌تر پس‌زمینه، روشن‌تر آیکون) ===== */
+    --category-blue: #60a5fa;
+    --category-blue-bg: #0f2138;
+    --category-purple: #c084fc;
+    --category-purple-bg: #211230;
+    --category-orange: #fb923c;
+    --category-orange-bg: #2a1608;
+    --category-green: #4ade80;
+    --category-green-bg: #0f2417;
+    --category-red: #f87171;
+    --category-red-bg: #2a1010;
+    --category-slate: #94a3b8;
+    --category-slate-bg: #14243a;
+    --category-indigo: #818cf8;
+    --category-indigo-bg: #181a3a;
+    --category-teal: #2dd4c8;
+    --category-teal-bg: #0f2b28;
+
+    /* ===== Shadow (روی پس‌زمینه تیره، سایه پررنگ‌تر) ===== */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 16px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 30px -5px rgb(0 0 0 / 0.5);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-light: var(--primary-light);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-category-blue: var(--category-blue);
+  --color-category-blue-bg: var(--category-blue-bg);
+  --color-category-purple: var(--category-purple);
+  --color-category-purple-bg: var(--category-purple-bg);
+  --color-category-orange: var(--category-orange);
+  --color-category-orange-bg: var(--category-orange-bg);
+  --color-category-green: var(--category-green);
+  --color-category-green-bg: var(--category-green-bg);
+  --color-category-red: var(--category-red);
+  --color-category-red-bg: var(--category-red-bg);
+  --color-category-slate: var(--category-slate);
+  --color-category-slate-bg: var(--category-slate-bg);
+  --color-category-indigo: var(--category-indigo);
+  --color-category-indigo-bg: var(--category-indigo-bg);
+  --color-category-teal: var(--category-teal);
+  --color-category-teal-bg: var(--category-teal-bg);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-@theme {
   --font-azarMehr: var(--font-azarMehr);
   --font-rokh: var(--font-rokh);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   margin: 0;
   direction: rtl;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-azarMehr), var(--font-sans);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-
