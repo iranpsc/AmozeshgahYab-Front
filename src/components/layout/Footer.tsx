@@ -25,9 +25,14 @@ const socialLinks = [
 
 const POPULAR_COUNT = 6;
 
+const headingClass = "mb-5 text-sm font-bold text-primary sm:text-base";
+const linkClass = "text-sm leading-7 text-secondary-foreground/65 transition-colors hover:text-secondary-foreground";
+const disabledClass = "cursor-not-allowed text-sm leading-7 text-secondary-foreground/30";
+
 /**
  * Server Component (بدون "use client" — هیچ تعامل کلاینتی لازم نیست، همه‌چیز
  * نمایشی/غیرفعاله). دسته‌بندی‌ها و شهرها از API واقعی می‌آن، نه هاردکد.
+ * رنگ‌ها از سیستم دیزاین (--secondary, --primary) می‌آن، نه هاردکد.
  */
 export default async function Footer() {
   let popularCourses: Awaited<ReturnType<typeof getCourses>> = [];
@@ -46,18 +51,20 @@ export default async function Footer() {
   }
 
   return (
-    <footer className="bg-[#0F172A] text-gray-300">
-      <div className="container mx-auto px-6 py-14">
+    <footer className="bg-secondary text-secondary-foreground">
+      <div className="mx-auto  px-4 py-14 lg:px-8 2xl:px-20">
         <div className="grid gap-10 lg:grid-cols-5">
           {/* برند + شبکه‌های اجتماعی (فعلاً بدون لینک واقعی) */}
           <div className="lg:col-span-1">
             <div className="mb-4 flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-cyan-400/10 text-cyan-400">
-                <FaGraduationCap size={18} />
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/15 text-primary">
+                <FaGraduationCap size={19} />
               </span>
-              <span className="text-lg font-bold text-white">آموزشگاه‌یاب</span>
+              <span className="text-lg font-bold text-secondary-foreground">
+                آموزشگاه‌یاب
+              </span>
             </div>
-            <p className="text-sm leading-7 text-gray-400">
+            <p className="text-sm leading-7 text-secondary-foreground/65">
               همراه شما در مسیر یادگیری بهتر
             </p>
             <div className="mt-5 flex items-center gap-2">
@@ -67,9 +74,9 @@ export default async function Footer() {
                   title="به‌زودی"
                   aria-disabled="true"
                   aria-label={label}
-                  className="grid h-9 w-9 cursor-not-allowed place-items-center rounded-lg bg-white/5 text-gray-500"
+                  className="grid h-10 w-10 cursor-not-allowed place-items-center rounded-lg bg-white/5 text-secondary-foreground/30"
                 >
-                  <Icon size={15} />
+                  <Icon size={16} />
                 </span>
               ))}
             </div>
@@ -77,39 +84,39 @@ export default async function Footer() {
 
           {/* راه‌های ارتباطی — دیتای موجود، دست‌نخورده */}
           <div>
-            <h3 className="mb-6 text-base font-bold text-cyan-400">
-              راه‌های ارتباطی
-            </h3>
-            <ul className="space-y-5 text-sm">
+            <h3 className={headingClass}>راه‌های ارتباطی</h3>
+            <ul className="space-y-4">
               <li className="flex items-center gap-3">
-                <FaPhone className="text-cyan-400 text-lg shrink-0" />
-                <a href="tel:02833647125" className="hover:text-white transition-colors">
+                <FaPhone size={17} className="shrink-0 text-primary" />
+                <a href="tel:02833647125" className={linkClass}>
                   تلفن ثابت: 02833647125
                 </a>
               </li>
 
               <li className="flex items-center gap-3">
-                <FaMobileScreenButton className="text-cyan-400 text-lg shrink-0" />
-                <a href="tel:09120820120" className="hover:text-white transition-colors">
+                <FaMobileScreenButton size={17} className="shrink-0 text-primary" />
+                <a href="tel:09120820120" className={linkClass}>
                   تلفن همراه: 09120820120
                 </a>
               </li>
 
               <li className="flex items-center gap-3">
-                <FaMailBulk className="text-cyan-400 text-lg shrink-0" />
-                <a href="mailto:info@amozeshgahyab.ir" className="hover:text-white transition-colors">
+                <FaMailBulk size={17} className="shrink-0 text-primary" />
+                <a href="mailto:info@amozeshgahyab.ir" className={linkClass}>
                   info@amozeshgahyab.ir
                 </a>
               </li>
 
               <li className="flex items-start gap-3">
-                <FaClock className="mt-1 text-cyan-400 text-lg shrink-0" />
-                <span>شنبه تا پنجشنبه ۸:۰۰ الی ۱۸:۰۰</span>
+                <FaClock size={17} className="mt-0.5 shrink-0 text-primary" />
+                <span className="text-sm leading-7 text-secondary-foreground/65">
+                  شنبه تا پنجشنبه ۸:۰۰ الی ۱۸:۰۰
+                </span>
               </li>
 
               <li className="flex items-start gap-3">
-                <FaLocationDot className="mt-1 text-cyan-400 text-lg shrink-0" />
-                <span>
+                <FaLocationDot size={17} className="mt-0.5 shrink-0 text-primary" />
+                <span className="text-sm leading-7 text-secondary-foreground/65">
                   آدرس دفتر قزوین - ملاصدرا - خیابان میرداماد - نبش بن بست پویا - پلاک 45
                   شماره تماس موبایل 09127855049
                 </span>
@@ -119,24 +126,18 @@ export default async function Footer() {
 
           {/* دسترسی سریع — همون لیست صفحات هدر، همون منطق غیرفعال‌سازی */}
           <div>
-            <h3 className="mb-6 text-base font-bold text-cyan-400">
-              دسترسی سریع
-            </h3>
-            <ul className="space-y-4 text-sm">
+            <h3 className={headingClass}>دسترسی سریع</h3>
+            <ul className="space-y-4">
               {navItems.map((item) =>
                 item.disabled ? (
                   <li key={item.href}>
-                    <span
-                      title="به‌زودی"
-                      aria-disabled="true"
-                      className="cursor-not-allowed text-gray-500"
-                    >
+                    <span title="به‌زودی" aria-disabled="true" className={disabledClass}>
                       {item.label}
                     </span>
                   </li>
                 ) : (
                   <li key={item.href}>
-                    <Link href={item.href} className="hover:text-white transition-colors">
+                    <Link href={item.href} className={linkClass}>
                       {item.label}
                     </Link>
                   </li>
@@ -147,20 +148,14 @@ export default async function Footer() {
 
           {/* دسته‌بندی‌های پرطرفدار — از API واقعی؛ صفحه‌ی مقصد هنوز نیست، پس غیرفعال */}
           <div>
-            <h3 className="mb-6 text-base font-bold text-cyan-400">
-              دسته‌بندی‌های پرطرفدار
-            </h3>
-            <ul className="space-y-4 text-sm">
+            <h3 className={headingClass}>دسته‌بندی‌های پرطرفدار</h3>
+            <ul className="space-y-4">
               {popularCourses.length === 0 ? (
-                <li className="text-gray-500">به‌زودی</li>
+                <li className={disabledClass}>به‌زودی</li>
               ) : (
                 popularCourses.map((course) => (
                   <li key={course.id}>
-                    <span
-                      title="به‌زودی"
-                      aria-disabled="true"
-                      className="cursor-not-allowed text-gray-500"
-                    >
+                    <span title="به‌زودی" aria-disabled="true" className={disabledClass}>
                       {course.title}
                     </span>
                   </li>
@@ -171,20 +166,14 @@ export default async function Footer() {
 
           {/* شهرهای پرطرفدار — از API واقعی؛ صفحه‌ی مقصد هنوز نیست، پس غیرفعال */}
           <div>
-            <h3 className="mb-6 text-base font-bold text-cyan-400">
-              شهرهای پرطرفدار
-            </h3>
-            <ul className="space-y-4 text-sm">
+            <h3 className={headingClass}>شهرهای پرطرفدار</h3>
+            <ul className="space-y-4">
               {popularCities.length === 0 ? (
-                <li className="text-gray-500">به‌زودی</li>
+                <li className={disabledClass}>به‌زودی</li>
               ) : (
                 popularCities.map((city) => (
                   <li key={city.id}>
-                    <span
-                      title="به‌زودی"
-                      aria-disabled="true"
-                      className="cursor-not-allowed text-gray-500"
-                    >
+                    <span title="به‌زودی" aria-disabled="true" className={disabledClass}>
                       {city.name}
                     </span>
                   </li>
@@ -195,12 +184,12 @@ export default async function Footer() {
         </div>
 
         {/* درباره سامانه + اینماد — دیتا و کد اینماد کاملاً دست‌نخورده، فقط جای مناسب */}
-        <div className="mt-12 grid gap-10 border-t border-slate-700 pt-10 lg:grid-cols-2">
+        <div className="mt-12 grid gap-10 border-t border-white/10 pt-10 lg:grid-cols-2">
           <div>
-            <h3 className="mb-6 text-2xl font-bold text-cyan-400">
+            <h3 className="mb-5 text-lg font-bold text-primary sm:text-xl">
               درباره سامانه آموزشگاه یاب
             </h3>
-            <p className="leading-8 text-gray-400 mb-6">
+            <p className="text-sm leading-8 text-secondary-foreground/65">
               سامانه آموزشگاه یک سیستم مدیریت آموزشی مدرن است که برای
               مدیریت ثبت‌نام، کلاس‌ها، اساتید و هنرجویان طراحی شده و
               امکانات کاملی برای مدیریت فرآیندهای آموزشی فراهم می‌کند.
@@ -217,19 +206,15 @@ export default async function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-slate-700">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-3 px-6 py-5 text-sm text-gray-400 md:flex-row">
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-sm text-secondary-foreground/50 md:flex-row lg:px-8">
           <span>© {new Date().getFullYear()} تمامی حقوق محفوظ است.</span>
 
           <div className="flex items-center gap-5">
-            <Link href="/" className="hover:text-white transition-colors">
+            <Link href="/" className="transition-colors hover:text-secondary-foreground">
               amoozeshgahyab.ir
             </Link>
-            <span
-              title="به‌زودی"
-              aria-disabled="true"
-              className="cursor-not-allowed text-gray-500"
-            >
+            <span title="به‌زودی" aria-disabled="true" className="cursor-not-allowed text-secondary-foreground/30">
               قوانین و مقررات
             </span>
           </div>
