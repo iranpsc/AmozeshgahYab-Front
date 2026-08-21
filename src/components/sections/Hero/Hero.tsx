@@ -23,7 +23,7 @@ export default function Hero({ provinceSlug }: Props) {
       <div className="mx-auto w-full px-4 py-10 lg:px-8 lg:py-16">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-6">
           <div className="relative z-10">
-            <h1 className="text-3xl 2xl:text-6xl font-bold leading-[1.4] text-foreground sm:text-4xl lg:text-[2.75rem]">
+            <h1 className="text-3xl font-rokh 2xl:text-6xl font-bold leading-[1.4] text-foreground sm:text-4xl lg:text-[2.75rem]">
               بهترین آموزشگاه‌ها
               <br />
               در <span className="text-primary">شهر خود</span> را پیدا کنید

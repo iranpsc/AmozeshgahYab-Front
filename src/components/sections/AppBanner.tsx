@@ -11,7 +11,7 @@ export default function AppBanner() {
         <div className="flex flex-col items-center gap-8 lg:flex-row lg:justify-between">
           {/* متن + دکمه‌های نمایشی */}
           <div className="text-center lg:text-right space-y-10">
-            <h2 className="text-xl font-bold text-primary-foreground sm:text-2xl lg:text-5xl">
+            <h2 className="text-xl font-rokh font-bold text-primary-foreground sm:text-2xl lg:text-5xl">
               اپلیکیشن آموزشگاه‌یاب
             </h2>
             <p className="mt-2 text-sm leading-7 text-primary-foreground/85 sm:text-base lg:text-xl">
