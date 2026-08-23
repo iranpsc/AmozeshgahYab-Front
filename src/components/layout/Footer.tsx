@@ -71,9 +71,8 @@ export default async function Footer() {
               {socialLinks.map(({ icon: Icon, label }) => (
                 <span
                   key={label}
-                  title="به‌زودی"
-                  aria-disabled="true"
-                  aria-label={label}
+                  title={label}
+                  
                   className="grid h-10 w-10 cursor-not-allowed place-items-center rounded-lg bg-white/5 text-secondary-foreground/30"
                 >
                   <Icon size={16} />

@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "amozeshgahyab.ir",
       },
+      {
+        protocol: "https",
+        hostname: "dev.amozeshgahyab.ir",
+      },
     ],
   },
 };

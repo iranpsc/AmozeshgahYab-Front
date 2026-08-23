@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl" suppressHydrationWarning>
-      <body className={`${azarMehr.variable} ${rokh.variable} relative`} >
+      <body className={`${azarMehr.variable} ${rokh.variable}  relative`} >
         <ThemeProvider >
           <Header />
           {children}
