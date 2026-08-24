@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { getCourses, getCities } from "@/lib/academies";
 import { navItems } from "./header/nav-items";
+import Image from "next/image";
 
 const socialLinks = [
   { icon: FaTelegram, label: "تلگرام" },
@@ -57,8 +58,12 @@ export default async function Footer() {
           {/* برند + شبکه‌های اجتماعی (فعلاً بدون لینک واقعی) */}
           <div className="lg:col-span-1">
             <div className="mb-4 flex items-center gap-2">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/15 text-primary">
-                <FaGraduationCap size={19} />
+              <span className="grid h-10 w-10 lg:w-12 lg:h-12 p-1 place-items-center rounded-xl bg-primary/15 text-primary">
+                 <Image src="/images/logo.png"
+                            alt="amozeshgha logo"
+                            width={40}
+                            height={40}
+                            />
               </span>
               <span className="text-lg font-bold text-secondary-foreground">
                 آموزشگاه‌یاب

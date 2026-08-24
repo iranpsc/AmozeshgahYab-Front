@@ -9,7 +9,7 @@ import SearchModal from "@/components/ui/SearchModal";
 import ThemeToggle from "./ThemeToggle";
 import AcademiesMegaMenu from "./AcademiesMegaMenu";
 import type { AcademyCardData } from "@/lib/academies";
-
+import Image from "next/image";
 type Props = {
   /** آموزشگاه‌های نمونه برای مگامنو، از سرور (نگاه کن HeaderServer.tsx) */
   megaMenuAcademies: AcademyCardData[];
@@ -33,8 +33,12 @@ export default function Header({ megaMenuAcademies }: Props) {
 
         {/* لوگو */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary-light text-primary">
-            <FaGraduationCap size={18} />
+          <span className="grid h-10 w-10 lg:h-12 lg:w-12 p-1 place-items-center rounded-xl bg-primary-light text-primary">
+            <Image src="/images/logo.png"
+            alt="amozeshgha logo"
+            width={40}
+            height={40}
+            />
           </span>
           <span className="text-lg font-bold text-foreground">آموزشگاه‌یاب</span>
         </Link>
