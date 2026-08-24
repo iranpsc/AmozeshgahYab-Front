@@ -32,7 +32,7 @@ export default function CreateBrandingForm({
   clearErrors,
   setBackendErrors,
 } = useFormErrors();
-  const [step, setStep] = useState(1);
+  // const [step, setStep] = useState(1);
 
   const [selectedCourses, setSelectedCourses] =
     useState<number[]>([]);

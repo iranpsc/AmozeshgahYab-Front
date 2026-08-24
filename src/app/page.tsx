@@ -1,7 +1,21 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { Suspense } from "react";
 
-
+import Hero from "@/components/sections/Hero/Hero";
+import Categories, { CategoriesSkeleton } from "@/components/sections/Categories";
+import FeaturedAcademies, {
+  FeaturedAcademiesSkeleton,
+} from "@/components/sections/FeaturedAcademies";
+import CityAcademies, {
+  CityAcademiesSkeleton,
+} from "@/components/sections/CityAcademies";
+import TrustBadges from "@/components/sections/TrustBadges";
+import { getProvinces, DEFAULT_PROVINCE_NAME } from "@/lib/academies";
+import Articles from "@/components/sections/Articles";
+import AppBanner from "@/components/sections/AppBanner";
+import { Metadata } from "next";
+type PageProps = {
+  searchParams: Promise<{ province?: string }>;
+};
 const SITE_NAME = "آموزشگاه یاب";
 // const SITE_URL = "https://amoozeshgahyab.ir";
 
@@ -94,10 +108,8 @@ export const metadata: Metadata = {
 
   // manifest: "/site.webmanifest",
 };
-
-
-export default function Home() {
-  const schema = {
+export default async function HomePage({ searchParams }: PageProps) {
+    const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "آموزشگاه یاب",
@@ -122,20 +134,50 @@ export default function Home() {
       priceCurrency: "IRR",
     },
   };
+  const { province } = await searchParams;
+
+  // چون API فقط id عددی استان رو قبول می‌کنه (نه اسم)، همینجا مقدار خام
+  // URL رو به یک Province واقعی تبدیل می‌کنیم.
+  const provinces = await getProvinces();
+  const selectedProvince =
+    provinces.find((p) => String(p.id) === province) ??
+    provinces.find((p) => p.name === DEFAULT_PROVINCE_NAME) ??
+    provinces[0];
+  const provinceSlug = selectedProvince ? String(selectedProvince.id) : undefined;
+
   return (
-    <div className="flex h-[58vh] flex-col items-center justify-center">
-      <script
+    <>
+
+      <main className="2xl:px-10">
+              <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(schema),
         }}
       />
-      <main className="flex w-full h-full flex-col items-center  text-3xl  bg-gradient-to-tr from-[#0F172A] via-[#0e1e42] to-[#155E75]">
+        <Hero provinceSlug={provinceSlug} />
 
-        <h1 className=" mt-20 text-white font-bold text-4xl  font-rokh"> آموزشگاه یاب</h1>
-        <Link className="text-xl text-[#0F172A] bg-cyan-300 py-4 px-5 my-10 rounded-xl" href={`/login`}>برای ورود کیلیک کنید</Link>
+
+        {selectedProvince && (
+          <Suspense key={`province-${provinceSlug}`} fallback={<CityAcademiesSkeleton />}>
+            <CityAcademies
+              provinceSlug={provinceSlug!}
+              provinceLabel={selectedProvince.name}
+            />
+          </Suspense>
+        )}
+        <Suspense fallback={<CategoriesSkeleton />}>
+          <Categories />
+        </Suspense>
+
+        <Suspense fallback={<FeaturedAcademiesSkeleton />}>
+          <FeaturedAcademies />
+        </Suspense>
+
+        <TrustBadges />
+        <Articles />
+        <AppBanner />
       </main>
-
-    </div>
+    </>
   );
 }
