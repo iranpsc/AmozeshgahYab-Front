@@ -19,7 +19,7 @@ const stats = [
 
 export default function Hero({ provinceSlug }: Props) {
   return (
-    <section className="relative overflow-hidden bg-background">
+    <section className="relative  bg-background">
       <div className="mx-auto w-full px-4 py-10 lg:px-8 lg:py-16">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-6">
           <div className="relative z-10">
