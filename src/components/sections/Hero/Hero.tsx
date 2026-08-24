@@ -58,8 +58,8 @@ export default function Hero({ provinceSlug }: Props) {
                 desktopOnly ? "hidden lg:flex" : ""
               }`}
             >
-              <span className="grid h-8 w-8 lg:w-12 lg:h-12 shrink-0 place-items-center rounded-lg bg-primary-light text-primary">
-                <Icon size={14} />
+              <span className="grid h-10 w-10 lg:w-12 lg:h-12 shrink-0 place-items-center rounded-lg bg-primary-light text-primary">
+                <Icon size={24} />
               </span>
               <div className="flex flex-col items-center sm:items-start">
                 <span className="text-sm lg:text-base font-bold text-foreground">{value}</span>
