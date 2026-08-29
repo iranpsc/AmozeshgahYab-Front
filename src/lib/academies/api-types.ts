@@ -24,11 +24,14 @@ export type Course = {
   icon: string | null;
 };
 
-/** شکل دقیق Subcourse تو Swagger مستند نبود؛ فرض بر همون الگوی Course گذاشته شده */
+/** شکل واقعی از لاگ بک‌اند تأیید شد: id, course, title, description, slug, icon */
 export type Subcourse = {
   id: number;
+  course: number;
   title: string;
   description?: string;
+  slug?: string;
+  icon?: string | null;
 };
 
 /**
@@ -69,4 +72,13 @@ export type HomeInstituteQuery = {
   subcourses?: string;
   search?: string;
   page?: number;
+  /**
+   * فیلتر جنسیت — تست شد و بک‌اند رو /academy/home/ ساپورتش نمی‌کنه (400 می‌ده).
+   * این مقدار به API فرستاده نمی‌شه؛ فقط سمت کلاینت (روی نتایج همون صفحه) اعمال می‌شه.
+   */
+  gender?: string;
+  /**
+   * ترتیب نمایش — این هم تست شد، بک‌اند 400 می‌ده. فقط سمت کلاینت اعمال می‌شه.
+   */
+  ordering?: string;
 };
