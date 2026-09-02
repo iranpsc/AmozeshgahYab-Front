@@ -41,6 +41,8 @@ export type AcademyListItemData = {
   href: string;
   name: string;
   imageUrl: string | null;
+  /** لوگوی مجزا از بنر — همون بج‌آیکون گرد روی تصویر تو موکاپ */
+  logoUrl: string | null;
   gender: GenderInfo;
   provinceName: string;
   cityName: string;
@@ -177,6 +179,7 @@ export function mapInstituteToListItem(institute: HomeInstitute): AcademyListIte
     href: `/academies/${institute.slug}`,
     name: institute.institute_name,
     imageUrl: resolveImageUrl(institute.banner) ?? resolveImageUrl(institute.logo),
+    logoUrl: resolveImageUrl(institute.logo),
     gender: normalizeGender(institute.gender),
     provinceName: institute.province?.name || "",
     cityName: institute.city?.name || "نامشخص",

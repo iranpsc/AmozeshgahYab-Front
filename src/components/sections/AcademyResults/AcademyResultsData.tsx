@@ -1,4 +1,4 @@
-import { getHomeInstitutes, mapInstituteToListItem, DEFAULT_PAGE_SIZE } from "@/lib/academies";
+import { getHomeInstitutes, mapInstituteToListItem, DEFAULT_PAGE_SIZE, ApiError } from "@/lib/academies";
 import type { HomeInstituteQuery, AcademyListItemData } from "@/lib/academies";
 import EmptyState from "@/components/ui/EmptyState";
 import AcademyResults from "./AcademyResults";
@@ -42,6 +42,15 @@ function applyClientFilters(
   return list;
 }
 
+const EMPTY_RESULT: FetchResult = {
+  ok: true,
+  academies: [],
+  apiCount: 0,
+  hasNext: false,
+  hasPrevious: false,
+  genderFiltered: false,
+};
+
 async function fetchResults(query: HomeInstituteQuery): Promise<FetchResult> {
   try {
     const { results, count, next, previous } = await getHomeInstitutes(query);
@@ -57,6 +66,12 @@ async function fetchResults(query: HomeInstituteQuery): Promise<FetchResult> {
       genderFiltered: Boolean(query.gender),
     };
   } catch (error) {
+    // 404 یعنی «چیزی با این فیلترها/صفحه پیدا نشد» — این خطای واقعی نیست،
+    // پس به‌جای پیام قرمز «خطا در دریافت»، همون حالت خالیِ عادی نمایش داده می‌شه
+    // (که خودِ AcademyResults با academies=[] رندرش می‌کنه)
+    if (error instanceof ApiError && error.status === 404) {
+      return EMPTY_RESULT;
+    }
     console.error("AcademyResultsData fetch failed:", error);
     return {
       ok: false,
@@ -87,14 +102,14 @@ export default async function AcademyResultsData({ query }: Props) {
         currentPage={page}
         approximateCount={result.genderFiltered}
       />
-<div className="mt-5">
-        <Pagination
+     <div className="mt-8">
+       <Pagination
         currentPage={page}
         totalPages={estimatedTotalPages}
         hasNext={result.hasNext}
         hasPrevious={result.hasPrevious}
       />
-</div>
+     </div>
     </>
   );
 }

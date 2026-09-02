@@ -11,6 +11,16 @@ type FetchOptions = {
   signal?: AbortSignal;
 };
 
+/** خطای API با status code واقعی، تا caller بتونه مثلاً 404 رو جدا از بقیه‌ی خطاها هندل کنه */
+export class ApiError extends Error {
+  status: number;
+  constructor(status: number, path: string) {
+    super(`درخواست API ناموفق بود (${status}): ${path}`);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 /**
  * fetch اختصاصی API با base URL ثابت، تایم‌اوت، و کشِ ISR.
  * همیشه از این استفاده کنید، نه fetch مستقیم — تا رفتار کش/خطا یکدست بمونه.
@@ -40,7 +50,7 @@ export async function apiFetch<T>(
     });
 
     if (!res.ok) {
-      throw new Error(`درخواست API ناموفق بود (${res.status}): ${path}`);
+      throw new ApiError(res.status, path);
     }
 
     return (await res.json()) as T;

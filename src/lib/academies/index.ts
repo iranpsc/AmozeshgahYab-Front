@@ -1,3 +1,4 @@
+export { ApiError } from "./api-client";
 export type {
   City,
   Province,

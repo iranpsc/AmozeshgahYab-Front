@@ -25,9 +25,9 @@ export default function MobileFiltersDrawer({ children }: Props) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex h-11 flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary text-sm font-bold text-primary-foreground"
+        className="flex px-5 h-11 flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary text-sm font-bold text-primary-foreground"
       >
-        <FaFilter size={13} />
+        <FaFilter size={14} />
         نمایش فیلترها
       </button>
 
