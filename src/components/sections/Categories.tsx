@@ -42,14 +42,15 @@ export default async function Categories() {
             return (
               <Link
                 key={course.id}
-                href={`/categories/${course.slug}`}
+                // href={`/categories/${course.slug}`}
+                href={`#`}
                 className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-3 text-center transition-shadow hover:shadow-md"
               >
                 <span className="grid h-12 w-12 place-items-center rounded-xl bg-primary-light text-primary">
                   {iconUrl ? (
-                    <Image src={iconUrl} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+                    <Image src={iconUrl} alt="دسته بندي" width={24} height={24} className="h-6 w-6 object-contain" />
                   ) : (
-                    <FaGraduationCap size={20} />
+                    <FaGraduationCap size={24} />
                   )}
                 </span>
                 <span className="line-clamp-1 text-xs font-medium text-foreground">
