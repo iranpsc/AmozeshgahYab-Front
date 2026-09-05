@@ -136,7 +136,7 @@ export default async function AcademiesPage({ searchParams }: PageProps) {
       </div>
 
       <div className="mb-4">
-        <Suspense fallback={<AcademyFiltersSkeleton />}>
+        <Suspense>
           <MobileFiltersDrawer>
             <AcademyFilters />
           </MobileFiltersDrawer>

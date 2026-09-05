@@ -1,5 +1,6 @@
 import { getHomeInstitutes, mapInstituteToListItem, DEFAULT_PAGE_SIZE, ApiError } from "@/lib/academies";
 import type { HomeInstituteQuery, AcademyListItemData } from "@/lib/academies";
+import { absoluteUrl } from "@/lib/site-config";
 import EmptyState from "@/components/ui/EmptyState";
 import AcademyResults from "./AcademyResults";
 import Pagination from "@/components/ui/Pagination";
@@ -19,10 +20,6 @@ type FetchResult =
     }
   | { ok: false; message: string };
 
-/**
- * جنسیت و ترتیب نمایش رو بک‌اند ساپورت نمی‌کنه (400 می‌ده) — پس فقط رو نتایج
- * همون صفحه‌ی گرفته‌شده اعمال می‌شن.
- */
 function applyClientFilters(
   academies: AcademyListItemData[],
   query: HomeInstituteQuery
@@ -59,16 +56,11 @@ async function fetchResults(query: HomeInstituteQuery): Promise<FetchResult> {
       ok: true,
       academies,
       apiCount: count,
-      // منبع درست بودن/نبودن صفحه‌ی بعد/قبل، فیلد next/previous خودِ API‌ـه —
-      // نه یه تخمین از count/pageSize که ممکنه با pageSize واقعی بک‌اند یکی نباشه
       hasNext: Boolean(next),
       hasPrevious: Boolean(previous),
       genderFiltered: Boolean(query.gender),
     };
   } catch (error) {
-    // 404 یعنی «چیزی با این فیلترها/صفحه پیدا نشد» — این خطای واقعی نیست،
-    // پس به‌جای پیام قرمز «خطا در دریافت»، همون حالت خالیِ عادی نمایش داده می‌شه
-    // (که خودِ AcademyResults با academies=[] رندرش می‌کنه)
     if (error instanceof ApiError && error.status === 404) {
       return EMPTY_RESULT;
     }
@@ -78,6 +70,48 @@ async function fetchResults(query: HomeInstituteQuery): Promise<FetchResult> {
       message: error instanceof Error ? error.message : "خطای ناشناخته",
     };
   }
+}
+
+/**
+ * ItemList معتبر schema.org برای همین لیستِ واقعاً رندرشده (نه دیتای فرضی) —
+ * فیلدهایی که دیتا نداریم (تلفن/تصویر) اصلاً تو خروجی نمی‌ذاریم، چون مقدار
+ * خالی/جعلی تو Rich Results Test ارور می‌گیره.
+ */
+function buildItemListSchema(academies: AcademyListItemData[], page: number) {
+  const pageOffset = (page - 1) * DEFAULT_PAGE_SIZE;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "همه آموزشگاه‌ها",
+    url: absoluteUrl("/academies"),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: academies.map((academy, index) => {
+        const item: Record<string, unknown> = {
+          "@type": "EducationalOrganization",
+          name: academy.name,
+          url: absoluteUrl(academy.href),
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: academy.address,
+            addressLocality: academy.cityName,
+            addressRegion: academy.provinceName || undefined,
+            addressCountry: "IR",
+          },
+        };
+        const phone = academy.mobileNumber || academy.landlinePhone;
+        if (phone) item.telephone = phone;
+        if (academy.imageUrl) item.image = absoluteUrl(academy.imageUrl);
+
+        return {
+          "@type": "ListItem",
+          position: pageOffset + index + 1,
+          item,
+        };
+      }),
+    },
+  };
 }
 
 export default async function AcademyResultsData({ query }: Props) {
@@ -91,25 +125,31 @@ export default async function AcademyResultsData({ query }: Props) {
   }
 
   const displayedCount = result.genderFiltered ? result.academies.length : result.apiCount;
-  // فقط برای شماره‌های وسط pagination (تخمینیه، چون pageSize دقیق مستند نیست)
   const estimatedTotalPages = Math.max(1, Math.ceil(result.apiCount / DEFAULT_PAGE_SIZE));
 
   return (
     <>
+      {result.academies.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildItemListSchema(result.academies, page)),
+          }}
+        />
+      )}
+
       <AcademyResults
         academies={result.academies}
         totalCount={displayedCount}
         currentPage={page}
         approximateCount={result.genderFiltered}
       />
-     <div className="mt-8">
-       <Pagination
+      <Pagination
         currentPage={page}
         totalPages={estimatedTotalPages}
         hasNext={result.hasNext}
         hasPrevious={result.hasPrevious}
       />
-     </div>
     </>
   );
 }

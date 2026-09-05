@@ -6,6 +6,7 @@ import type {
   HomeInstitute,
   HomeInstituteListResponse,
   HomeInstituteQuery,
+  InstituteDetail,
   Province,
   Subcourse,
 } from "./api-types";
@@ -86,6 +87,13 @@ export async function getHomeInstitutes(
   return apiFetch<HomeInstituteListResponse>(`/academy/home/${qs}`, {
     revalidateSeconds: query.search ? 0 : 300, // نتایج سرچ نباید کش بشن
     signal: options.signal,
+  });
+}
+
+/** GET /academy/institute/{slug}/ — همون شکل HomeInstitute، برای صفحه‌ی تکی آموزشگاه */
+export async function getInstituteBySlug(slug: string): Promise<InstituteDetail> {
+  return apiFetch<InstituteDetail>(`/academy/institute/${encodeURIComponent(slug)}/`, {
+    revalidateSeconds: 300,
   });
 }
 
@@ -189,5 +197,96 @@ export function mapInstituteToListItem(institute: HomeInstitute): AcademyListIte
     coursesCount: institute.courses?.length ?? 0,
     primaryCourseName: institute.courses?.[0]?.title ?? null,
     subcourseTags: institute.subcourses?.map((s) => s.title).filter(Boolean) ?? [],
+  };
+}
+
+export type InstituteCourseCard = {
+  id: number;
+  title: string;
+  iconUrl: string | null;
+  /** تعداد زیردوره‌های همین آموزشگاه که به این دوره تعلق دارن (دیتای واقعی، نه تخمینی) */
+  subcoursesCount: number;
+};
+
+export type InstituteSubcourseCard = {
+  id: number;
+  title: string;
+  iconUrl: string | null;
+};
+
+export type InstituteDetailData = {
+  id: number;
+  slug: string;
+  name: string;
+  imageUrl: string | null;
+  logoUrl: string | null;
+  gender: GenderInfo;
+  provinceName: string;
+  cityName: string;
+  address: string;
+  landlinePhone: string;
+  mobileNumber: string;
+  latitude: number | null;
+  longitude: number | null;
+  courses: InstituteCourseCard[];
+  subcourses: InstituteSubcourseCard[];
+  coursesCount: number;
+  subcoursesCount: number;
+  // فیلدهای زیر تو اسکیمای رسمی نبودن — اگه مقدار نداشته باشن (undefined)، بخش
+  // مربوطه‌شون تو UI اصلاً رندر نمی‌شه
+  description?: string;
+  rating?: number;
+  reviewsCount?: number;
+  establishedYear?: string;
+  website?: string;
+  isVerified?: boolean;
+  attendanceType?: string;
+  instagram?: string;
+  telegram?: string;
+  whatsapp?: string;
+};
+
+/** آداپتور برای صفحه‌ی تکی آموزشگاه */
+export function mapInstituteToDetail(institute: InstituteDetail): InstituteDetailData {
+  const lat = Number(institute.latitude);
+  const lng = Number(institute.longitude);
+
+  return {
+    id: institute.id,
+    slug: institute.slug,
+    name: institute.institute_name,
+    imageUrl: resolveImageUrl(institute.banner) ?? resolveImageUrl(institute.logo),
+    logoUrl: resolveImageUrl(institute.logo),
+    gender: normalizeGender(institute.gender),
+    provinceName: institute.province?.name || "",
+    cityName: institute.city?.name || "نامشخص",
+    address: institute.address,
+    landlinePhone: institute.landline_phone,
+    mobileNumber: institute.mobile_number,
+    latitude: Number.isFinite(lat) ? lat : null,
+    longitude: Number.isFinite(lng) ? lng : null,
+    courses: (institute.courses ?? []).map((c) => ({
+      id: c.id,
+      title: c.title,
+      iconUrl: resolveApiUrl(c.icon),
+      subcoursesCount: (institute.subcourses ?? []).filter((s) => s.course === c.id).length,
+    })),
+    subcourses: (institute.subcourses ?? []).map((s) => ({
+      id: s.id,
+      title: s.title,
+      iconUrl: resolveApiUrl(s.icon ?? null),
+    })),
+    coursesCount: institute.courses?.length ?? 0,
+    subcoursesCount: institute.subcourses?.length ?? 0,
+    description: institute.description || undefined,
+    rating: institute.rating,
+    reviewsCount: institute.reviews_count,
+    establishedYear: institute.established_year ? String(institute.established_year) : undefined,
+    website: institute.website || undefined,
+    isVerified: institute.is_verified,
+    attendanceType: institute.attendance_type || undefined,
+    instagram: institute.instagram || undefined,
+    telegram: institute.telegram || undefined,
+    whatsapp: institute.whatsapp || undefined,
   };
 }
