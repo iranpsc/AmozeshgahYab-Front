@@ -58,6 +58,29 @@ export type HomeInstitute = {
   banner: ApiImage;
 };
 
+/**
+ * پاسخ GET /academy/institute/{slug}/ — تو Swagger فرستاده‌شده courses/subcourses
+ * به‌اشتباه `string` تایپ شده بودن (به‌احتمال زیاد یه محدودیت خودکارِ مستندسازی
+ * سمت بک‌اند)، ولی چون همون Course[]/Subcourse[] لیست خونه‌ای هستن، از همون تایپ
+ * استفاده شده. فیلدهای rating/description/established_year/website/شبکه‌های
+ * اجتماعی/is_verified/attendance_type اصلاً تو اسکیمای دادهشده نبودن — این‌ها
+ * optional تعریف شدن تا اگه بک‌اند واقعی داشتشون خودکار نمایش داده بشن، وگرنه
+ * بخش مربوطه تو UI ساکت مخفی می‌مونه (بدون کرش و بدون دیتای ساختگی).
+ */
+export type InstituteDetail = HomeInstitute & {
+  description?: string;
+  rating?: number;
+  reviews_count?: number;
+  established_year?: string | number;
+  website?: string;
+  is_verified?: boolean;
+  /** نوع برگزاری دوره‌ها، مثلاً «حضوری»/«آنلاین» — اسم فیلد واقعی تو بک‌اند مشخص نبود */
+  attendance_type?: string;
+  instagram?: string;
+  telegram?: string;
+  whatsapp?: string;
+};
+
 export type HomeInstituteListResponse = {
   count: number;
   next: string | null;

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { FaChevronDown, FaArrowLeft, FaSchool } from "react-icons/fa";
 import type { AcademyCardData } from "@/lib/academies";
+import Link from "next/link";
 
 type Props = {
   academies: AcademyCardData[];
@@ -92,10 +93,10 @@ export default function AcademiesMegaMenuPanel({ academies }: Props) {
             </div>
           )}
 
-          <div className="flex items-center justify-center gap-2 border-t border-border bg-surface py-3 text-sm font-medium text-primary">
+          <Link href="/academies" className="flex items-center justify-center gap-2 border-t border-border bg-surface py-3 text-sm font-medium text-primary">
             مشاهده همه آموزشگاه‌ها
             <FaArrowLeft size={12} />
-          </div>
+          </Link>
         </div>
       </div>
     </div>
