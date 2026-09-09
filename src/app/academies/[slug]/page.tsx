@@ -82,21 +82,21 @@ export default async function InstitutePage({ params }: PageProps) {
     ...(institute.website ? { sameAs: [institute.website] } : {}),
     ...(institute.latitude && institute.longitude
       ? {
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: institute.latitude,
-            longitude: institute.longitude,
-          },
-        }
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: institute.latitude,
+          longitude: institute.longitude,
+        },
+      }
       : {}),
     ...(typeof institute.rating === "number" && typeof institute.reviewsCount === "number"
       ? {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: institute.rating,
-            reviewCount: institute.reviewsCount,
-          },
-        }
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: institute.rating,
+          reviewCount: institute.reviewsCount,
+        },
+      }
       : {}),
   };
 
@@ -116,7 +116,7 @@ export default async function InstitutePage({ params }: PageProps) {
   };
 
   return (
-    <main className="mx-auto  py-6 lg:px-8 2xl:px-20">
+    <main className="mx-auto  py-6 px-4 lg:px-8 2xl:px-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -142,17 +142,19 @@ export default async function InstitutePage({ params }: PageProps) {
         <InstituteHero institute={institute} />
         <InstituteStats institute={institute} />
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_320px]">
-          <div className="flex flex-col gap-4">
+        <div className=" gap-4 flex flex-col lg:flex-row max-w-full relative">
+          <div className="flex flex-col gap-4 order-2 lg:order-1 w-full lg:w-[60%] 2xl:w-[75%]" >
             <InstituteAbout institute={institute} />
             <InstituteCourses institute={institute} />
             <InstituteSubcourses institute={institute} />
           </div>
 
-          <div className="flex flex-col gap-4">
-            <InstituteLocation institute={institute} />
-            <InstituteContact institute={institute} />
-          </div>
+          <aside className="order-1 lg:order-2 w-full lg:w-[40%] 2xl:w-[25%]">
+            <div className="lg:sticky lg:top-20 flex flex-col gap-4">
+              <InstituteLocation institute={institute} />
+              <InstituteContact institute={institute} />
+            </div>
+          </aside>
         </div>
       </div>
     </main>

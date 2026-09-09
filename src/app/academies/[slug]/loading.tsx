@@ -2,7 +2,7 @@ import { InstituteHeroSkeleton } from "@/components/sections/InstituteHero";
 
 export default function Loading() {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
+    <main className="mx-auto px-4 py-6 lg:px-8 2xl:px-20">
       <div className="mb-3 h-3 w-40 animate-pulse rounded bg-surface-2" />
       <div className="flex flex-col gap-4">
         <InstituteHeroSkeleton />

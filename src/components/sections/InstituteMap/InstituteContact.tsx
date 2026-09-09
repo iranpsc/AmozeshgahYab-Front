@@ -14,13 +14,13 @@ export default function InstituteContact({ institute }: Props) {
 
   return (
     <section className="rounded-2xl border border-border bg-card p-4">
-      <h2 className="mb-3 text-sm font-bold text-foreground">راه‌های ارتباطی</h2>
+      <h3 className="mb-5 text-base lg:text-xl font-bold text-foreground">راه‌های ارتباطی</h3>
 
       <div className="flex flex-col gap-2.5">
         {institute.landlinePhone && (
-          <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center justify-between text-sm lg:text-base">
             <span className="flex items-center gap-1.5 text-muted-foreground">
-              <FaPhoneAlt size={12} />
+              <FaPhoneAlt size={16} />
               تلفن ثابت
             </span>
             <a href={`tel:${institute.landlinePhone}`} dir="ltr" className="font-medium text-foreground hover:text-primary">
@@ -29,9 +29,9 @@ export default function InstituteContact({ institute }: Props) {
           </div>
         )}
         {institute.mobileNumber && (
-          <div className="flex items-center justify-between text-xs">
-            <span className="flex items-center gap-1.5 text-muted-foreground">
-              <FaMobileAlt size={12} />
+          <div className="flex items-center justify-between text-sm lg:text-base">
+            <span className="flex items-center gap-2 text-muted-foreground">
+              <FaMobileAlt size={16} />
               شماره موبایل
             </span>
             <a href={`tel:${institute.mobileNumber}`} dir="ltr" className="font-medium text-foreground hover:text-primary">
@@ -52,7 +52,7 @@ export default function InstituteContact({ institute }: Props) {
               aria-label={label}
               className="grid h-9 w-9 place-items-center rounded-lg bg-surface text-muted-foreground transition-colors hover:bg-primary-light hover:text-primary"
             >
-              <Icon size={15} />
+              <Icon size={16} />
             </a>
           ))}
         </div>

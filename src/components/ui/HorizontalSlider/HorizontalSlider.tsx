@@ -27,10 +27,10 @@ export default function HorizontalSlider({ children }: Props) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <div
         ref={scrollerRef}
-        className="flex gap-4 overflow-x-auto scroll-smooth py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-4 w-full overflow-x-auto scroll-smooth py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{ scrollSnapType: "x mandatory" }}
       >
         {children}
@@ -40,7 +40,7 @@ export default function HorizontalSlider({ children }: Props) {
         <button
           type="button"
           onClick={() => scrollByAmount("prev")}
-          className="grid h-9 w-9 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+          className="grid h-9 w-9 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-surface hover:text-foreground hover:border-primary"
           aria-label="آیتم قبلی"
         >
           <FaChevronRight size={13} />
@@ -48,7 +48,7 @@ export default function HorizontalSlider({ children }: Props) {
         <button
           type="button"
           onClick={() => scrollByAmount("next")}
-          className="grid h-9 w-9 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+          className="grid h-9 w-9 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-surface hover:text-foreground hover:border-primary"
           aria-label="آیتم بعدی"
         >
           <FaChevronLeft size={13} />
