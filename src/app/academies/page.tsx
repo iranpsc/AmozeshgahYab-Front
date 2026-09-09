@@ -65,7 +65,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title,
     description,
-    alternates: { canonical: canonicalPath },
+    alternates: { canonical: absoluteUrl(canonicalPath) },
     robots: hasNonIndexableFilters
       ? { index: false, follow: true }
       : { index: true, follow: true },
