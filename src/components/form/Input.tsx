@@ -18,26 +18,28 @@ export default function Input({
         w-full
         rounded-xl
         border
-        bg-white
+        bg-card
         px-4
+        text-foreground
         outline-none
         transition-colors
+        placeholder:text-muted-foreground
         disabled:cursor-not-allowed
-        disabled:bg-slate-100
+        disabled:bg-muted
 
         ${
           error
             ? `
-              border-red-500
-              focus:border-red-500
+              border-danger
+              focus:border-danger
               focus:ring-2
-              focus:ring-red-100
+              focus:ring-danger/20
             `
             : `
-              border-slate-300
-              focus:border-blue-600
+              border-input
+              focus:border-primary
               focus:ring-2
-              focus:ring-blue-100
+              focus:ring-ring/30
             `
         }
 

@@ -19,16 +19,17 @@ export default function Select({
         w-full
         rounded-xl
         border
-        bg-white
+        bg-card
         px-4
+        text-foreground
         outline-none
-        transition
+        transition-colors
         ${
           error
-            ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            : "border-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+            ? "border-danger focus:border-danger focus:ring-2 focus:ring-danger/20"
+            : "border-input focus:border-primary focus:ring-2 focus:ring-ring/30"
         }
-        disabled:bg-slate-100
+        disabled:bg-muted
         disabled:cursor-not-allowed
         ${className}
       `}

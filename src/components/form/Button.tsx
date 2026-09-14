@@ -17,12 +17,12 @@ export default function Button({
         items-center
         justify-center
         rounded-xl
-        bg-blue-600
+        bg-primary
         px-6
         font-semibold
-        text-white
-        transition
-        hover:bg-blue-700
+        text-primary-foreground
+        transition-colors
+        hover:bg-primary-hover
         disabled:cursor-not-allowed
         disabled:opacity-60
         ${className}

@@ -143,7 +143,7 @@ function openCropper(
   return (
     <form
       onSubmit={submit}
-      className="rounded-2xl bg-white p-8 shadow space-y-6"
+      className="rounded-2xl border border-border bg-card p-8 space-y-6"
     >
       <h2 className="mb-2 text-3xl font-bold">
         ثبت برند آموزشگاه
@@ -158,7 +158,7 @@ function openCropper(
           {courses.map((course) => (
             <label
               key={course.id}
-              className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 hover:bg-slate-50"
+              className="flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3 hover:bg-surface"
             >
               <input
                 type="checkbox"
@@ -190,7 +190,7 @@ function openCropper(
 
               return (
                 <div key={courseId}>
-                  <p className="mb-2 text-sm font-semibold text-slate-600">
+                  <p className="mb-2 text-sm font-semibold text-muted-foreground">
                     {course?.title}
                   </p>
 
@@ -198,7 +198,7 @@ function openCropper(
                     {courseSubcourses.map((subcourse) => (
                       <label
                         key={subcourse.id}
-                        className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 hover:bg-slate-50"
+                        className="flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3 hover:bg-surface"
                       >
                         <input
                           type="checkbox"
@@ -269,7 +269,7 @@ onChange={(e) => {
 
         <Button
           type="button"
-          className="bg-red-100 text-red-600 hover:bg-red-200"
+          className="bg-danger/10 text-danger hover:bg-danger/20"
           onClick={() => {
             setLogo(null);
 
@@ -340,7 +340,7 @@ onChange={(e) => {
 
         <Button
           type="button"
-          className="bg-red-100 text-red-600 hover:bg-red-200"
+          className="bg-danger/10 text-danger hover:bg-danger/20"
           onClick={() => {
             setBanner(null);
 

@@ -136,7 +136,7 @@ async function submit(
   return (
     <form
       onSubmit={submit}
-      className="rounded-2xl bg-white p-8 space-y-6 shadow"
+      className="rounded-2xl border border-border bg-card p-8 space-y-6"
     >
       <h2 className="mb-2 text-3xl font-bold">
         ویرایش برند آموزشگاه
@@ -151,7 +151,7 @@ async function submit(
           {courses.map((course) => (
             <label
               key={course.id}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition hover:border-blue-500"
+              className="flex cursor-pointer items-center gap-3 rounded-xl border border-border p-4 transition hover:border-primary"
             >
               <input
                 type="checkbox"
@@ -185,7 +185,7 @@ async function submit(
 
               return (
                 <div key={courseId}>
-                  <p className="mb-2 text-sm font-semibold text-slate-600">
+                  <p className="mb-2 text-sm font-semibold text-muted-foreground">
                     {course?.title}
                   </p>
 
@@ -193,7 +193,7 @@ async function submit(
                     {courseSubcourses.map((subcourse) => (
                       <label
                         key={subcourse.id}
-                        className="flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition hover:border-blue-500"
+                        className="flex cursor-pointer items-center gap-3 rounded-xl border border-border p-4 transition hover:border-primary"
                       >
                         <input
                           type="checkbox"
@@ -278,7 +278,7 @@ async function submit(
 
         <Button
           type="button"
-          className="bg-red-100 text-red-600"
+          className="bg-danger/10 text-danger"
           onClick={() => {
             setLogo(null);
 
@@ -364,7 +364,7 @@ onChange={(e) => {
 
         <Button
           type="button"
-          className="bg-red-100 text-red-600"
+          className="bg-danger/10 text-danger"
           onClick={() => {
             setBanner(null);
 
@@ -397,7 +397,7 @@ onChange={(e) => {
         <Button
           type="button"
           onClick={onCancel}
-          className="bg-slate-200 text-slate-700 hover:bg-slate-300"
+          className="border border-border bg-transparent text-foreground! hover:bg-surface"
         >
           انصراف
         </Button>

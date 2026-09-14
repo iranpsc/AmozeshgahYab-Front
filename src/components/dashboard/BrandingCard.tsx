@@ -21,6 +21,18 @@ interface Props {
   onEdit: () => void;
 }
 
+const STATUS_LABELS: Record<InstituteBranding["status"], string> = {
+  pending: "در انتظار بررسی",
+  approved: "تأیید شده",
+  rejected: "رد شده",
+};
+
+const STATUS_CLASSES: Record<InstituteBranding["status"], string> = {
+  pending: "bg-warning/15 text-warning",
+  approved: "bg-success/15 text-success",
+  rejected: "bg-danger/15 text-danger",
+};
+
 export default function BrandingCard({
   branding,
   courses,
@@ -28,14 +40,14 @@ export default function BrandingCard({
   onEdit,
 }: Props) {
   return (
-    <div className="rounded-2xl bg-white p-8 shadow">
+    <div className="rounded-2xl border border-border bg-card p-8">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-3xl font-bold text-foreground">
             برند آموزشگاه
           </h2>
 
-          <p className="mt-2 text-slate-500">
+          <p className="mt-2 text-muted-foreground">
             اطلاعات برند ثبت شده
           </p>
         </div>
@@ -50,7 +62,7 @@ export default function BrandingCard({
         {/* لوگو */}
 
         <div>
-          <h3 className="mb-3 font-bold">
+          <h3 className="mb-3 font-bold text-foreground">
             لوگو
           </h3>
 
@@ -58,16 +70,16 @@ export default function BrandingCard({
             <img
               src={branding.logo}
               alt="لوگو"
-              className="h-28 w-28 rounded-xl border object-cover"
+              className="h-28 w-28 rounded-xl border border-border object-cover"
             />
           ) : (
-            <div className="rounded-xl border border-dashed p-8 text-slate-400">
+            <div className="rounded-xl border border-dashed border-border p-8 text-muted-foreground">
               لوگویی ثبت نشده است
             </div>
           )}
 
           {!!branding.logo_problem && (
-            <p className="mt-2 text-sm text-red-600">
+            <p className="mt-2 text-sm text-danger">
               {branding.logo_problem}
             </p>
           )}
@@ -76,7 +88,7 @@ export default function BrandingCard({
         {/* بنر */}
 
         <div>
-          <h3 className="mb-3 font-bold">
+          <h3 className="mb-3 font-bold text-foreground">
             بنر
           </h3>
 
@@ -84,16 +96,16 @@ export default function BrandingCard({
             <img
               src={branding.banner}
               alt="بنر"
-              className="h-48 w-full rounded-xl border object-cover"
+              className="h-48 w-full rounded-xl border border-border object-cover"
             />
           ) : (
-            <div className="rounded-xl border border-dashed p-10 text-slate-400">
+            <div className="rounded-xl border border-dashed border-border p-10 text-muted-foreground">
               بنری ثبت نشده است
             </div>
           )}
 
           {!!branding.banner_problem && (
-            <p className="mt-2 text-sm text-red-600">
+            <p className="mt-2 text-sm text-danger">
               {branding.banner_problem}
             </p>
           )}
@@ -102,7 +114,7 @@ export default function BrandingCard({
         {/* دوره‌ها */}
 
         <div>
-          <h3 className="mb-3 font-bold">
+          <h3 className="mb-3 font-bold text-foreground">
             دوره‌های انتخاب شده
           </h3>
 
@@ -115,7 +127,7 @@ export default function BrandingCard({
               return (
                 <span
                   key={courseId}
-                  className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
+                  className="rounded-full bg-category-blue-bg px-3 py-1 text-sm text-category-blue"
                 >
                   {course?.title ?? `دوره ${courseId}`}
                 </span>
@@ -127,7 +139,7 @@ export default function BrandingCard({
         {/* زیر دوره‌ها */}
 
         <div>
-          <h3 className="mb-3 font-bold">
+          <h3 className="mb-3 font-bold text-foreground">
             زیر دوره‌های انتخاب شده
           </h3>
 
@@ -141,14 +153,14 @@ export default function BrandingCard({
                 return (
                   <span
                     key={subcourseId}
-                    className="rounded-full bg-emerald-100 px-3 py-1 text-sm text-emerald-700"
+                    className="rounded-full bg-category-purple-bg px-3 py-1 text-sm text-category-purple"
                   >
                     {subcourse?.title ?? `زیردوره ${subcourseId}`}
                   </span>
                 );
               })
             ) : (
-              <span className="text-slate-400">
+              <span className="text-muted-foreground">
                 زیردوره‌ای انتخاب نشده است.
               </span>
             )}
@@ -158,12 +170,14 @@ export default function BrandingCard({
         {/* وضعیت */}
 
         <div>
-          <h3 className="mb-2 font-bold">
+          <h3 className="mb-2 font-bold text-foreground">
             وضعیت
           </h3>
 
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-sm text-amber-700">
-            {branding.status}
+          <span
+            className={`rounded-full px-3 py-1 text-sm font-medium ${STATUS_CLASSES[branding.status]}`}
+          >
+            {STATUS_LABELS[branding.status] ?? branding.status}
           </span>
         </div>
 

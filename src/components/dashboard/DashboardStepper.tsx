@@ -28,26 +28,26 @@ function Step({
   const colors = {
     done: {
       circle:
-        "bg-green-600 border-green-600 text-white",
-      line: "bg-green-600",
+        "bg-success border-success text-success-foreground",
+      line: "bg-success",
       icon: "✓",
     },
     current: {
       circle:
-        "bg-blue-600 border-blue-600 text-white animate-pulse",
-      line: "bg-slate-300",
+        "bg-primary border-primary text-primary-foreground animate-pulse",
+      line: "bg-border",
       icon: "•",
     },
     waiting: {
       circle:
-        "bg-white border-slate-300 text-slate-400",
-      line: "bg-slate-300",
+        "bg-card border-border text-muted-foreground",
+      line: "bg-border",
       icon: "",
     },
     rejected: {
       circle:
-        "bg-red-600 border-red-600 text-white",
-      line: "bg-slate-300",
+        "bg-danger border-danger text-danger-foreground",
+      line: "bg-border",
       icon: "✕",
     },
   };
@@ -151,7 +151,7 @@ export default function DashboardStepper({
   }
 
   return (
-    <div className="mx-auto mb-8 rounded-3xl border bg-white p-8 shadow-sm">
+    <div className="mx-auto mb-8 rounded-3xl border border-border bg-card p-8">
 
       <div className="mb-8">
 
@@ -159,7 +159,7 @@ export default function DashboardStepper({
           مراحل تکمیل آموزشگاه
         </h2>
 
-        <p className="mt-2 text-slate-500">
+        <p className="mt-2 text-muted-foreground">
           وضعیت تکمیل حساب کاربری شما
         </p>
 

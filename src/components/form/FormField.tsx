@@ -15,18 +15,18 @@ export default function FormField({
 }: FormFieldProps) {
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-semibold text-slate-700">
+      <label className="block text-sm font-semibold text-foreground">
         {label}
 
         {required && (
-          <span className="mr-1 text-red-500">*</span>
+          <span className="mr-1 text-danger">*</span>
         )}
       </label>
 
       {children}
 
       {error && (
-        <p className="text-sm font-medium text-red-500">
+        <p className="text-sm font-medium text-danger">
           {error}
         </p>
       )}
