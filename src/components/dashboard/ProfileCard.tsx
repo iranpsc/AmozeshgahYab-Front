@@ -5,6 +5,9 @@ interface InstituteProfile {
   landline_phone: string;
   address: string;
   postal_code: string;
+  gender?: string;
+  latitude?: string;
+  longitude?: string;
   status: string;
 }
 
@@ -12,6 +15,13 @@ interface ProfileCardProps {
   profile: InstituteProfile;
   onEdit: () => void;
 }
+
+/** همون آرایه‌ی CreateProfileForm.tsx/EditProfileForm.tsx — فقط برای نمایش برچسب فارسی */
+const GENDER_LABELS: Record<string, string> = {
+  mixed: "مختلط",
+  male: "مردانه",
+  female: "زنانه",
+};
 
 export default function ProfileCard({
   profile,
@@ -68,6 +78,15 @@ export default function ProfileCard({
         />
 
         <InfoCard
+          title="جنسیت آموزشگاه"
+          value={
+            profile.gender
+              ? (GENDER_LABELS[profile.gender] ?? profile.gender)
+              : "—"
+          }
+        />
+
+        <InfoCard
           title="کد پستی"
           value={profile.postal_code}
         />
@@ -75,6 +94,16 @@ export default function ProfileCard({
         <InfoCard
           title="وضعیت"
           value={profile.status}
+        />
+
+        <InfoCard
+          title="عرض جغرافیایی"
+          value={profile.latitude || "—"}
+        />
+
+        <InfoCard
+          title="طول جغرافیایی"
+          value={profile.longitude || "—"}
         />
 
         <div className="rounded-2xl bg-white p-6 shadow-sm md:col-span-2">

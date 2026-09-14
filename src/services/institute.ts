@@ -7,6 +7,11 @@ export interface InstituteProfile {
   landline_phone: string;
   address: string;
   postal_code: string;
+  gender?: string;
+  province?: number;
+  city?: number;
+  latitude?: string;
+  longitude?: string;
   status: string;
 }
 
@@ -23,6 +28,7 @@ export interface InstituteBranding {
   id: number;
 
   courses: number[];
+  subcourses: number[];
 
   logo: string | null;
   logo_problem: string;

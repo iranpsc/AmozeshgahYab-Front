@@ -13,10 +13,17 @@ interface Course {
   title: string;
 }
 
+interface Subcourse {
+  id: number;
+  course: number;
+  title: string;
+}
+
 interface Props {
   profile: InstituteProfile;
   branding: InstituteBranding;
   courses: Course[];
+  subcourses: Subcourse[];
 
   onEditProfile: () => void;
   onEditBranding: () => void;
@@ -26,6 +33,7 @@ export default function CompletedDashboard({
  profile,
   branding,
   courses,
+  subcourses,
   onEditProfile,
   onEditBranding,
 }: Props) {
@@ -76,6 +84,7 @@ export default function CompletedDashboard({
           <BrandingSummaryCard
           branding={branding}
           courses={courses}
+          subcourses={subcourses}
         />
   <button
     onClick={onEditBranding}

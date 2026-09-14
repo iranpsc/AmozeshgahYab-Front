@@ -56,10 +56,11 @@ export default async function CityAcademies({ provinceSlug, provinceLabel }: Pro
 
       {academies.length > 0 && (
         <HorizontalSlider>
-          <ViewAllCityCard city={provinceLabel} href={`/academies?province=${provinceSlug}`} />
+         
           {academies.map((academy, index) => (
             <AcademyCard key={academy.id} academy={academy} priority={index === 0} />
           ))}
+           <ViewAllCityCard city={provinceLabel} href={`/academies?province=${provinceSlug}`} />
         </HorizontalSlider>
       )}
     </section>

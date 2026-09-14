@@ -14,13 +14,21 @@ interface Course {
   title: string;
 }
 
+interface Subcourse {
+  id: number;
+  course: number;
+  title: string;
+}
+
 interface Props {
   branding: InstituteBranding;
 
   courses: Course[];
+  subcourses: Subcourse[];
 
 onSubmit: (data: {
   courses: number[];
+  subcourses: number[];
   logo: File | null;
   banner: File | null;
 }) => Promise<void>;
@@ -30,6 +38,7 @@ onSubmit: (data: {
 export default function EditBrandingForm({
   branding,
   courses,
+  subcourses,
   onSubmit,
   onCancel,
 }: Props) {
@@ -62,8 +71,31 @@ const [cropType, setCropType] =
   const [selectedCourses, setSelectedCourses] =
     useState<number[]>(branding.courses);
 
+  const [selectedSubcourses, setSelectedSubcourses] =
+    useState<number[]>(branding.subcourses);
+
   function toggleCourse(id: number) {
-    setSelectedCourses((prev) =>
+    setSelectedCourses((prev) => {
+      const next = prev.includes(id)
+        ? prev.filter((x) => x !== id)
+        : [...prev, id];
+
+      if (!next.includes(id)) {
+        const subcourseIdsOfCourse = subcourses
+          .filter((s) => s.course === id)
+          .map((s) => s.id);
+
+        setSelectedSubcourses((prevSub) =>
+          prevSub.filter((s) => !subcourseIdsOfCourse.includes(s))
+        );
+      }
+
+      return next;
+    });
+  }
+
+  function toggleSubcourse(id: number) {
+    setSelectedSubcourses((prev) =>
       prev.includes(id)
         ? prev.filter((x) => x !== id)
         : [...prev, id]
@@ -89,6 +121,7 @@ async function submit(
 
     await onSubmit({
       courses: selectedCourses,
+      subcourses: selectedSubcourses,
       logo,
       banner,
     });
@@ -135,6 +168,49 @@ async function submit(
           ))}
         </div>
       </FormField>
+
+      {selectedCourses.length > 0 && (
+        <FormField
+          label="زیر دوره‌ها"
+          error={errors.subcourses}
+        >
+          <div className="space-y-4">
+            {selectedCourses.map((courseId) => {
+              const course = courses.find((c) => c.id === courseId);
+              const courseSubcourses = subcourses.filter(
+                (s) => s.course === courseId
+              );
+
+              if (courseSubcourses.length === 0) return null;
+
+              return (
+                <div key={courseId}>
+                  <p className="mb-2 text-sm font-semibold text-slate-600">
+                    {course?.title}
+                  </p>
+
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {courseSubcourses.map((subcourse) => (
+                      <label
+                        key={subcourse.id}
+                        className="flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition hover:border-blue-500"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedSubcourses.includes(subcourse.id)}
+                          onChange={() => toggleSubcourse(subcourse.id)}
+                        />
+
+                        <span>{subcourse.title}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </FormField>
+      )}
       <FormField
   label="لوگو"
   error={errors.logo}
@@ -386,4 +462,3 @@ onChange={(e) => {
     </form>
   );
 }
-
