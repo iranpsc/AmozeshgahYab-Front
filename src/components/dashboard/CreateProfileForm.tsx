@@ -200,7 +200,7 @@ function handleChange(
   }
 
   return (
-    <div className="mx-auto w-full rounded-2xl bg-white p-8 shadow">
+    <div className="mx-auto w-full rounded-2xl border border-border bg-card p-8">
       <h2 className="mb-8 text-3xl font-bold">
         ایجاد پروفایل آموزشگاه
       </h2>
@@ -342,16 +342,16 @@ function handleChange(
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="block text-sm font-semibold text-slate-700">
+            <label className="block text-sm font-semibold text-foreground">
               موقعیت مکانی روی نقشه
-              <span className="mr-1 text-red-500">*</span>
+              <span className="mr-1 text-danger">*</span>
             </label>
 
             <button
               type="button"
               onClick={handleUseCurrentLocation}
               disabled={locating}
-              className="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
             >
               <FaLocationArrow size={12} />
               {locating ? "در حال دریافت موقعیت..." : "دریافت موقعیت من"}

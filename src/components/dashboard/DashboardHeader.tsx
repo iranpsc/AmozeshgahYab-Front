@@ -12,15 +12,15 @@ export default function DashboardHeader({
   onLogout,
 }: DashboardHeaderProps) {
   return (
-    <header className="mb-6 rounded-2xl bg-[#0F172A] p-6 mx-2 mt-2">
+    <header className="mb-6 rounded-2xl bg-secondary p-6 mx-2 mt-2">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-cyan-400">
+          <h1 className="text-3xl font-bold text-primary">
             {title}
           </h1>
 
           {subtitle && (
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-secondary-foreground/70">
               {subtitle}
             </p>
           )}
@@ -31,13 +31,13 @@ export default function DashboardHeader({
           onClick={onLogout}
           className="
             rounded-xl
-            bg-red-500
+            bg-danger
             px-5
             py-2.5
             font-medium
-            text-white
+            text-danger-foreground
             transition
-            hover:bg-red-600
+            hover:bg-danger/90
             active:scale-95
           "
         >

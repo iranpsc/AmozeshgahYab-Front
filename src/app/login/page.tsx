@@ -51,7 +51,7 @@ export default function LoginPage() {
 
       {/* Header */}
       <div className="absolute top-10 left-1/2 z-20 -translate-x-1/2">
-        <h1 className="text-center text-xl lg:text-2xl md:text-4xl font-bold text-[#0d4b87]">
+        <h1 className="text-center text-xl lg:text-2xl md:text-4xl 2xl:text-4xl font-bold text-gray-100">
           amozeshgahyab.ir - سامانه آموزشگاه یاب
         </h1>
       </div>
@@ -72,7 +72,7 @@ export default function LoginPage() {
 
       {/* Login Card */}
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 mt-16 lg:mt-0">
-        <div className="w-full max-w-[430px] rounded-2xl bg-white p-8 shadow-2xl text-black">
+        <div className="w-full max-w-[430px] rounded-2xl bg-background p-8 shadow-2xl text-foreground">
 
           {/* Logo */}
           <div className="mb-4 flex justify-center">
@@ -103,18 +103,37 @@ export default function LoginPage() {
               type="text"
               autoComplete="username"
               placeholder="نام کاربری"
-              className="
-                h-14
-                w-full
-                rounded-lg
-                border
-                border-gray-300
-                bg-[#eef3fb]
-                px-4
-                text-right
-                outline-none
-                focus:border-[#0d65c9]
-              "
+              className={`
+        h-12
+        w-full
+        rounded-xl
+        border
+        bg-card
+        px-4
+        text-foreground
+        outline-none
+        transition-colors
+        placeholder:text-muted-foreground
+        disabled:cursor-not-allowed
+        disabled:bg-muted
+
+        ${
+          error
+            ? `
+              border-danger
+              focus:border-danger
+              focus:ring-2
+              focus:ring-danger/20
+            `
+            : `
+              border-input
+              focus:border-primary
+              focus:ring-2
+              focus:ring-ring/30
+            `
+        }
+
+      `}
             />
           </div>
 
@@ -137,18 +156,38 @@ export default function LoginPage() {
                 }
                 autoComplete="current-password"
                 placeholder="رمز عبور"
-                className="
-                  h-14
-                  w-full
-                  rounded-lg
-                  border
-                  border-gray-300
-                  bg-[#eef3fb]
-                  px-4
-                  text-right
-                  outline-none
-                  focus:border-[#0d65c9]
-                "
+               className={`
+        h-12
+        w-full
+        rounded-xl
+        border
+        bg-card
+        px-4
+        text-foreground
+        outline-none
+        transition-colors
+        placeholder:text-muted-foreground
+        disabled:cursor-not-allowed
+        disabled:bg-muted
+
+        ${
+          error
+            ? `
+              border-danger
+              focus:border-danger
+              focus:ring-2
+              focus:ring-danger/20
+            `
+            : `
+              border-input
+              focus:border-primary
+              focus:ring-2
+              focus:ring-ring/30
+            `
+        }
+
+       
+      `}
               />
 
               <button
@@ -209,10 +248,10 @@ export default function LoginPage() {
               h-14
               w-full
               rounded-lg
-              bg-[#0d65c9]
+              bg-primary
               text-xl
+              text-primary-foreground/90
               font-bold
-              text-white
               transition
               hover:bg-[#0b56ab]
               disabled:opacity-60
@@ -239,7 +278,7 @@ export default function LoginPage() {
           </button> */}
 
           {/* Footer */}
-          <p className="mt-6 text-center text-base leading-8 text-gray-700">
+          <p className="mt-6 text-center text-base leading-8 text-foreground">
             این سامانه با استفاده از دامنه amozeshgahyab.ir برای آموزشگاه ها ایجاد شده است
 
           </p>

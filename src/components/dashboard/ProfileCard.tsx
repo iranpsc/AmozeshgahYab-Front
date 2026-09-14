@@ -30,14 +30,14 @@ export default function ProfileCard({
   return (
     <div className="space-y-6">
 
-      <div className="flex items-center justify-between rounded-2xl bg-white p-6 shadow-sm">
+      <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-6">
 
         <div>
           <h2 className="text-2xl font-bold">
             اطلاعات آموزشگاه
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             اطلاعات ثبت شده آموزشگاه
           </p>
         </div>
@@ -46,13 +46,13 @@ export default function ProfileCard({
           onClick={onEdit}
           className="
             rounded-lg
-            bg-blue-600
+            bg-primary
             px-5
             py-2.5
             font-medium
-            text-white
+            text-primary-foreground
             transition
-            hover:bg-blue-700
+            hover:bg-primary-hover
           "
         >
           ویرایش اطلاعات
@@ -106,8 +106,8 @@ export default function ProfileCard({
           value={profile.longitude || "—"}
         />
 
-        <div className="rounded-2xl bg-white p-6 shadow-sm md:col-span-2">
-          <p className="mb-2 text-sm text-gray-500">
+        <div className="rounded-2xl border border-border bg-card p-6 md:col-span-2">
+          <p className="mb-2 text-sm text-muted-foreground">
             آدرس
           </p>
 
@@ -132,9 +132,9 @@ function InfoCard({
   value,
 }: InfoCardProps) {
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-border bg-card p-6">
 
-      <p className="mb-2 text-sm text-gray-500">
+      <p className="mb-2 text-sm text-muted-foreground">
         {title}
       </p>
 

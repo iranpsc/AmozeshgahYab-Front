@@ -290,7 +290,7 @@ async function createBranding(data: {
 if (completed && profile && branding) {
   if (isEditing) {
     return (
-      <main className="min-h-screen bg-cyan-50">
+      <main className="min-h-screen bg-background">
         <DashboardHeader
           onLogout={handleLogout}
           title="آموزشگاه یاب"
@@ -311,7 +311,7 @@ if (completed && profile && branding) {
 
   if (isBrandingEditing) {
     return (
-      <main className="min-h-screen bg-cyan-50">
+      <main className="min-h-screen bg-background">
         <DashboardHeader
           onLogout={handleLogout}
           title="آموزشگاه یاب"
@@ -331,7 +331,7 @@ if (completed && profile && branding) {
   }
 
   return (
-    <main className="min-h-screen bg-cyan-50">
+    <main className="min-h-screen bg-background">
       <DashboardHeader
         onLogout={handleLogout}
         title="آموزشگاه یاب"
@@ -350,7 +350,7 @@ if (completed && profile && branding) {
 }
 
   return (
-    <main className="min-h-screen  bg-cyan-50">
+    <main className="min-h-screen bg-background">
       <DashboardHeader
         onLogout={handleLogout} title={"آموزشگاه یاب"} />
 
