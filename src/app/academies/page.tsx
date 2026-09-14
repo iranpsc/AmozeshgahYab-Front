@@ -65,7 +65,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title,
     description,
-    alternates: { canonical: canonicalPath },
+    alternates: { canonical: absoluteUrl(canonicalPath) },
     robots: hasNonIndexableFilters
       ? { index: false, follow: true }
       : { index: true, follow: true },
@@ -116,7 +116,7 @@ export default async function AcademiesPage({ searchParams }: PageProps) {
   };
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
+    <main className="mx-auto px-4 py-6 lg:px-8 2xl:px-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

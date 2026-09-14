@@ -2,10 +2,14 @@ export type InstituteForm = {
   institute_name: string;
   mobile_number: string;
   landline_phone: string;
+  /** optional چون EditProfileForm فعلاً این فیلدها رو نمی‌فرسته — فقط CreateProfileForm ازشون استفاده می‌کنه */
+  gender?: string;
   province: number;
   city: number;
   address: string;
   postal_code: string;
+  latitude?: string;
+  longitude?: string;
 };
 
 export type FormErrors = Record<string, string>;
@@ -30,6 +34,11 @@ export function validateInstitute(
       "تلفن ثابت معتبر نیست.";
   }
 
+  if (data.gender !== undefined && !data.gender) {
+    errors.gender =
+      "جنسیت آموزشگاه را انتخاب کنید.";
+  }
+
   if (!data.province) {
     errors.province =
       "استان را انتخاب کنید.";
@@ -48,6 +57,16 @@ export function validateInstitute(
   if (!/^\d{10}$/.test(data.postal_code)) {
     errors.postal_code =
       "کد پستی باید ۱۰ رقم باشد.";
+  }
+
+  if (data.latitude !== undefined && (!data.latitude.trim() || Number.isNaN(Number(data.latitude)))) {
+    errors.latitude =
+      "عرض جغرافیایی معتبر نیست.";
+  }
+
+  if (data.longitude !== undefined && (!data.longitude.trim() || Number.isNaN(Number(data.longitude)))) {
+    errors.longitude =
+      "طول جغرافیایی معتبر نیست.";
   }
 
   return errors;

@@ -1,5 +1,6 @@
 import { FaMapMarkerAlt } from "react-icons/fa";
 import type { InstituteDetailData } from "@/lib/academies";
+import MapEmbed from "./MapEmbed";
 
 type Props = {
   institute: InstituteDetailData;
@@ -19,14 +20,14 @@ export default function InstituteLocation({ institute }: Props) {
 
       {hasCoords && (
         <div className="mb-4 overflow-hidden rounded-xl border border-border">
-          {/* iframe بدون نیاز به API key؛ loading="lazy" یعنی تا وقتی تو viewport نیاد
-              اصلاً بارگذاری نمی‌شه — سبک‌ترین راه برای نقشه بدون اضافه‌کردن باندل JS */}
-          <iframe
+          {/* تا وقتی کاربر کلیک نکنه iframe گوگل مپ اصلاً لود نمی‌شه — چون خودِ
+              iframe (حتی با loading="lazy") به‌محض mount شدن کوکی‌های
+              third-party گوگل رو ست می‌کنه؛ این الگوی click-to-load دقیقاً
+              همون چیزیه که PageSpeed زیر «Uses third-party cookies» می‌خواد. */}
+          <MapEmbed
             title={`موقعیت ${institute.name} روی نقشه`}
-            src={`https://www.google.com/maps?q=${institute.latitude},${institute.longitude}&hl=fa&z=15&output=embed`}
-            className="h-48 w-full"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
+            latitude={institute.latitude!}
+            longitude={institute.longitude!}
           />
         </div>
       )}

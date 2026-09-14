@@ -8,15 +8,23 @@ interface Course {
   title: string;
 }
 
+interface Subcourse {
+  id: number;
+  course: number;
+  title: string;
+}
+
 interface Props {
   branding: InstituteBranding;
   courses: Course[];
+  subcourses: Subcourse[];
   onEdit: () => void;
 }
 
 export default function BrandingCard({
   branding,
   courses,
+  subcourses,
   onEdit,
 }: Props) {
   return (
@@ -113,6 +121,37 @@ export default function BrandingCard({
                 </span>
               );
             })}
+          </div>
+        </div>
+
+        {/* زیر دوره‌ها */}
+
+        <div>
+          <h3 className="mb-3 font-bold">
+            زیر دوره‌های انتخاب شده
+          </h3>
+
+          <div className="flex flex-wrap gap-2">
+            {branding.subcourses.length > 0 ? (
+              branding.subcourses.map((subcourseId) => {
+                const subcourse = subcourses.find(
+                  (s) => s.id === subcourseId
+                );
+
+                return (
+                  <span
+                    key={subcourseId}
+                    className="rounded-full bg-emerald-100 px-3 py-1 text-sm text-emerald-700"
+                  >
+                    {subcourse?.title ?? `زیردوره ${subcourseId}`}
+                  </span>
+                );
+              })
+            ) : (
+              <span className="text-slate-400">
+                زیردوره‌ای انتخاب نشده است.
+              </span>
+            )}
           </div>
         </div>
 

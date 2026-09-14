@@ -23,8 +23,7 @@ export default function AcademyCard({
 
   return (
     <Link
-      // href={academy.href}
-      href="#"
+      href={academy.href}
       className="group flex w-64 shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card  hover:shadow-[0_0_20px_0px_rgba(0,255,255,0.32)]   sm:w-72"
     >
       {/* Image */}

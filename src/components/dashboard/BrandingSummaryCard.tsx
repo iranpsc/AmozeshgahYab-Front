@@ -9,17 +9,29 @@ interface Course {
   title: string;
 }
 
+interface Subcourse {
+  id: number;
+  course: number;
+  title: string;
+}
+
 interface Props {
   branding: InstituteBranding;
   courses: Course[];
+  subcourses: Subcourse[];
 }
 
 export default function BrandingSummaryCard({
   branding,
   courses,
+  subcourses,
 }: Props) {
   const selectedCourses = courses.filter((course) =>
     branding.courses.includes(course.id)
+  );
+
+  const selectedSubcourses = subcourses.filter((subcourse) =>
+    branding.subcourses.includes(subcourse.id)
   );
 
   return (
@@ -121,6 +133,35 @@ export default function BrandingSummaryCard({
             ) : (
               <span className="text-slate-400">
                 دوره‌ای انتخاب نشده است.
+              </span>
+            )}
+
+          </div>
+
+        </div>
+
+        {/* Subcourses */}
+
+        <div>
+
+          <h3 className="mb-4 font-bold text-slate-700">
+            زیر دوره‌های آموزشی
+          </h3>
+
+          <div className="flex flex-wrap gap-3">
+
+            {selectedSubcourses.length > 0 ? (
+              selectedSubcourses.map((subcourse) => (
+                <span
+                  key={subcourse.id}
+                  className="rounded-full bg-fuchsia-100 px-4 py-2 text-sm font-bold text-fuchsia-700"
+                >
+                  {subcourse.title}
+                </span>
+              ))
+            ) : (
+              <span className="text-slate-400">
+                زیردوره‌ای انتخاب نشده است.
               </span>
             )}
 

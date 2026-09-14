@@ -34,6 +34,12 @@ interface Course {
   title: string;
 }
 
+interface Subcourse {
+  id: number;
+  course: number;
+  title: string;
+}
+
 
 export default function Dashboard() {
   const router = useRouter();
@@ -51,6 +57,7 @@ export default function Dashboard() {
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [subcourses, setSubcourses] = useState<Subcourse[]>([]);
   const [isCreatingBranding, setIsCreatingBranding] =
     useState(false);
   const [branding, setBranding] =
@@ -75,17 +82,19 @@ export default function Dashboard() {
     ]);
   }, []);
   async function loadLocationData() {
-    const [provinceRes, cityRes, courseRes] =
+    const [provinceRes, cityRes, courseRes, subcourseRes] =
       await Promise.all([
         api.get<Province[]>("/academy/provinces/"),
         api.get<City[]>("/academy/cities/"),
         api.get<Course[]>("/academy/courses/"),
+        api.get<Subcourse[]>("/academy/subcourses/"),
       ]);
 
 
     setProvinces(provinceRes.data);
     setCities(cityRes.data);
     setCourses(courseRes.data);
+    setSubcourses(subcourseRes.data);
   }
 
 
@@ -153,10 +162,13 @@ export default function Dashboard() {
     institute_name: string;
     mobile_number: string;
     landline_phone: string;
+    gender: string;
     province: number;
     city: number;
     address: string;
     postal_code: string;
+    latitude: string;
+    longitude: string;
   }) {
     try {
       const res = await api.post(
@@ -174,10 +186,13 @@ export default function Dashboard() {
     institute_name: string;
     mobile_number: string;
     landline_phone: string;
+    gender: string;
     province: number;
     city: number;
     address: string;
     postal_code: string;
+    latitude: string;
+    longitude: string;
   }) {
     await api.put(
       "/academy/institute/profile/",
@@ -190,6 +205,7 @@ export default function Dashboard() {
   }
 async function editBranding(data: {
   courses: number[];
+  subcourses: number[];
   logo: File | null;
   banner: File | null;
 }) {
@@ -197,6 +213,10 @@ async function editBranding(data: {
 
   data.courses.forEach((course) => {
     formData.append("courses", String(course));
+  });
+
+  data.subcourses.forEach((subcourse) => {
+    formData.append("subcourses", String(subcourse));
   });
 
   if (data.logo) {
@@ -223,6 +243,7 @@ async function editBranding(data: {
 }
 async function createBranding(data: {
   courses: number[];
+  subcourses: number[];
   logo: File | null;
   banner: File | null;
 }) {
@@ -231,6 +252,10 @@ async function createBranding(data: {
 
     data.courses.forEach((course) => {
       formData.append("courses", String(course));
+    });
+
+    data.subcourses.forEach((subcourse) => {
+      formData.append("subcourses", String(subcourse));
     });
 
     if (data.logo) {
@@ -296,6 +321,7 @@ if (completed && profile && branding) {
           <EditBrandingForm
             branding={branding}
             courses={courses}
+            subcourses={subcourses}
             onSubmit={editBranding}
             onCancel={() => setIsBrandingEditing(false)}
           />
@@ -315,6 +341,7 @@ if (completed && profile && branding) {
         profile={profile}
         branding={branding}
         courses={courses}
+        subcourses={subcourses}
         onEditProfile={() => setIsEditing(true)}
         onEditBranding={() => setIsBrandingEditing(true)}
       />
@@ -366,6 +393,7 @@ if (completed && profile && branding) {
           !isCreatingBranding && (
             <CreateBrandingForm
               courses={courses}
+              subcourses={subcourses}
               onSubmit={createBranding}
             />
           )}
@@ -376,6 +404,7 @@ if (completed && profile && branding) {
             <BrandingCard
               branding={branding}
               courses={courses}
+              subcourses={subcourses}
               onEdit={() => setIsBrandingEditing(true)}
             />
           )}
@@ -385,6 +414,7 @@ if (completed && profile && branding) {
             <EditBrandingForm
               branding={branding}
               courses={courses}
+              subcourses={subcourses}
               onSubmit={editBranding}
               onCancel={() =>
                 setIsBrandingEditing(false)

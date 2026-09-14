@@ -25,12 +25,12 @@ export default function BookmarkButton({ academyId }: Props) {
       aria-pressed={saved}
       aria-label={saved ? "حذف از نشان‌شده‌ها" : "نشان کردن آموزشگاه"}
       data-academy-id={academyId}
-      className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-card/80 text-muted-foreground backdrop-blur transition-colors hover:text-primary"
+      className="grid shrink-0 place-items-center rounded-lg bg-card/80 text-muted-foreground backdrop-blur transition-colors hover:text-primary"
     >
       {saved ? (
-        <FaBookmark size={14} className="text-primary" />
+        <FaBookmark size={16} className="text-primary" />
       ) : (
-        <FaRegBookmark size={14} />
+        <FaRegBookmark size={16} />
       )}
     </button>
   );
