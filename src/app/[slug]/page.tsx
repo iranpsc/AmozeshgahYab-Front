@@ -64,7 +64,7 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalPath = `/academies/${institute.slug}`;
+  const canonicalPath = `/${institute.slug}`;
   const canonicalUrl = absoluteUrl(canonicalPath);
 
   const title = `آموزشگاه ${institute.name}`;
@@ -144,7 +144,7 @@ export default async function InstitutePage({ params }: PageProps) {
     notFound();
   }
 
-  const canonicalPath = `/academies/${institute.slug}`;
+  const canonicalPath = `/${institute.slug}`;
   const canonicalUrl = absoluteUrl(canonicalPath);
 
   const imageUrl = institute.imageUrl

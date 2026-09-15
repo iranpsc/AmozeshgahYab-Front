@@ -1,28 +1,44 @@
+
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
-import { FaBars, FaSearch, FaGraduationCap } from "react-icons/fa";
+import {
+  FaBars,
+  FaSearch,
+} from "react-icons/fa";
+
 import { navItems } from "./nav-items";
 import MobileMenu from "./MobileMenu";
 import SearchModal from "@/components/ui/SearchModal";
 import ThemeToggle from "./ThemeToggle";
 import AcademiesMegaMenu from "./AcademiesMegaMenu";
+
 import type { AcademyCardData } from "@/lib/academies";
 import Image from "next/image";
+
 type Props = {
-  /** آموزشگاه‌های نمونه برای مگامنو، از سرور (نگاه کن HeaderServer.tsx) */
+  /** آموزشگاه‌های نمونه برای مگامنو، از سرور */
   megaMenuAcademies: AcademyCardData[];
 };
 
-export default function Header({ megaMenuAcademies }: Props) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+export default function Header({
+  megaMenuAcademies,
+}: Props) {
+  const [menuOpen, setMenuOpen] =
+    useState(false);
+
+  const [searchOpen, setSearchOpen] =
+    useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-8">
-        {/* موبایل: همبرگر / دسکتاپ: مخفی */}
+
+        {/* =========================
+            MOBILE MENU
+        ========================== */}
+
         <button
           onClick={() => setMenuOpen(true)}
           className="grid h-10 w-10 place-items-center rounded-lg text-foreground lg:hidden"
@@ -31,25 +47,56 @@ export default function Header({ megaMenuAcademies }: Props) {
           <FaBars size={20} />
         </button>
 
-        {/* لوگو */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="grid h-10 w-10 lg:h-12 lg:w-12 p-1 place-items-center rounded-xl bg-primary-light text-primary">
-            <Image src="/images/logo.png"
-            alt="amozeshgha logo"
-            width={40}
-            height={40}
+        {/* =========================
+            LOGO
+        ========================== */}
+
+        <Link
+          href="/"
+          className="flex items-center gap-2"
+        >
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-light p-1 text-primary lg:h-12 lg:w-12">
+            <Image
+              src="/images/logo.png"
+              alt="آموزشگاه‌یاب"
+              width={40}
+              height={40}
             />
           </span>
-          <span className="text-lg font-bold text-foreground">آموزشگاه‌یاب</span>
+
+          <span className="text-lg font-bold text-foreground">
+            آموزشگاه‌یاب
+          </span>
         </Link>
 
-        {/* ناوبری دسکتاپ */}
+        {/* =========================
+            DESKTOP NAVIGATION
+        ========================== */}
+
         <nav className="hidden items-center gap-1 lg:flex">
           {navItems.map((item) => {
+
+            /*
+             * آموزشگاه‌ها همیشه مگامنو خودش را دارد.
+             *
+             * مهم:
+             * این قسمت قبل از بررسی disabled قرار گرفته
+             * تا نمایش مگامنو هیچ وابستگی به disabled نداشته باشد.
+             */
+            if (item.href === "/academies") {
+              return (
+                <AcademiesMegaMenu
+                  key={item.href}
+                  academies={megaMenuAcademies}
+                />
+              );
+            }
+
+            /*
+             * سایر آیتم‌های disabled
+             */
             if (item.disabled) {
-              return item.href === "/academies" ? (
-                <AcademiesMegaMenu key={item.href} academies={megaMenuAcademies} />
-              ) : (
+              return (
                 <span
                   key={item.href}
                   title="به‌زودی"
@@ -61,6 +108,9 @@ export default function Header({ megaMenuAcademies }: Props) {
               );
             }
 
+            /*
+             * آیتم‌های فعال معمولی
+             */
             return (
               <Link
                 key={item.href}
@@ -73,10 +123,17 @@ export default function Header({ megaMenuAcademies }: Props) {
           })}
         </nav>
 
-        {/* اکشن‌ها */}
+        {/* =========================
+            ACTIONS
+        ========================== */}
+
         <div className="flex items-center gap-1.5">
+
+          {/* Desktop Search */}
           <button
-            onClick={() => setSearchOpen(true)}
+            onClick={() =>
+              setSearchOpen(true)
+            }
             className="hidden h-10 w-10 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground sm:grid"
             aria-label="جستجو"
           >
@@ -85,12 +142,15 @@ export default function Header({ megaMenuAcademies }: Props) {
 
           <ThemeToggle />
 
+          {/* Login */}
           <Link
             href="/login"
             className="hidden rounded-lg px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface md:inline-block"
           >
             ورود
           </Link>
+
+          {/* Register - Coming Soon */}
           <span
             title="به‌زودی"
             aria-disabled="true"
@@ -99,9 +159,11 @@ export default function Header({ megaMenuAcademies }: Props) {
             ثبت نام
           </span>
 
-          {/* موبایل: جستجو */}
+          {/* Mobile Search */}
           <button
-            onClick={() => setSearchOpen(true)}
+            onClick={() =>
+              setSearchOpen(true)
+            }
             className="grid h-10 w-10 place-items-center rounded-lg text-foreground sm:hidden"
             aria-label="جستجو"
           >
@@ -110,8 +172,28 @@ export default function Header({ megaMenuAcademies }: Props) {
         </div>
       </div>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      {/* =========================
+          MOBILE MENU
+      ========================== */}
+
+      <MobileMenu
+        open={menuOpen}
+        onClose={() =>
+          setMenuOpen(false)
+        }
+      />
+
+      {/* =========================
+          SEARCH MODAL
+      ========================== */}
+
+      <SearchModal
+        open={searchOpen}
+        onClose={() =>
+          setSearchOpen(false)
+        }
+      />
     </header>
   );
 }
+

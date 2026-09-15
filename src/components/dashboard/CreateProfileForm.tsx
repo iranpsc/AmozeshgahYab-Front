@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { FaLocationArrow } from "react-icons/fa";
 
 import FormField from "@/components/form/FormField";
@@ -14,6 +15,21 @@ import {
   validateInstitute,
 } from "@/utils/validation/institute";
 import useFormErrors from "@/hooks/useFormErrors";
+
+// لیفلت به window/document نیاز داره، پس هیچ‌وقت نباید تو SSR رندر بشه —
+// dynamic import با ssr:false تنها راه امنشه تو Next App Router
+const LocationPickerMap = dynamic(
+  () => import("@/components/dashboard/LocationPickerMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 w-full items-center justify-center rounded-xl border border-input bg-surface text-sm text-muted-foreground">
+        در حال بارگذاری نقشه...
+      </div>
+    ),
+  }
+);
+
 
 interface Province {
   id: number;
@@ -357,6 +373,20 @@ function handleChange(
               {locating ? "در حال دریافت موقعیت..." : "دریافت موقعیت من"}
             </button>
           </div>
+
+          <LocationPickerMap
+            latitude={form.latitude ? Number(form.latitude) : null}
+            longitude={form.longitude ? Number(form.longitude) : null}
+            onChange={(lat, lng) => {
+              clearErrors("latitude");
+              clearErrors("longitude");
+              setForm((prev) => ({
+                ...prev,
+                latitude: String(lat),
+                longitude: String(lng),
+              }));
+            }}
+          />
 
           <FormGrid cols={2}>
             <FormField label="عرض جغرافیایی" error={errors.latitude}>

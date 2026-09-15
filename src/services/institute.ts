@@ -12,6 +12,8 @@ export interface InstituteProfile {
   city?: number;
   latitude?: string;
   longitude?: string;
+  /** برای لینک به صفحه‌ی عمومی آموزشگاه (/academies/{slug}) */
+  slug?: string;
   status: string;
 }
 

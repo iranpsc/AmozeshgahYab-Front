@@ -7,7 +7,7 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   { label: "صفحه اصلی", href: "/" },
-  { label: "آموزشگاه‌ها", href: "/academies", disabled: true },
+  { label: "آموزشگاه‌ها", href: "/academies",  },
   { label: "دسته‌بندی‌ها", href: "/categories", disabled: true },
   { label: "مجله", href: "/magazine", disabled: true },
   { label: "درباره ما", href: "/about", disabled: true },

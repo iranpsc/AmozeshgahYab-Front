@@ -101,7 +101,7 @@ export default function BrandingSummaryCard({
             <img
               src={branding.banner}
               alt="Banner"
-              className="h-56 w-full rounded-2xl border border-border object-cover"
+              className="h-100 w-full rounded-2xl border border-border object-cover"
             />
           ) : (
             <div className="flex h-56 items-center justify-center rounded-2xl border border-dashed border-border bg-muted text-muted-foreground">
