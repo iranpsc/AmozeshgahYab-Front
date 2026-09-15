@@ -17,6 +17,7 @@ export const DEFAULT_PROVINCE_NAME = "قزوین";
 export const DEFAULT_PAGE_SIZE = 10;
 
 export type AcademyCardData = {
+  // slug: any;
   id: number;
   name: string;
   href: string;
