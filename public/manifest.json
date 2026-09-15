@@ -1,0 +1,18 @@
+{
+  "name": "Amozeshgahyab",
+  "short_name": "متارنگ",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#1f6feb",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "https://s3.metarang.com/amozeshgahyab/amozeshgahyab.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
