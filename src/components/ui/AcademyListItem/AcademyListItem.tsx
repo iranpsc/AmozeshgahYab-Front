@@ -38,7 +38,7 @@ export default function AcademyListItem({ academy, priority = false, isNew = fal
       className="group relative flex flex-col  gap-4 rounded-2xl border border-border bg-card p-3 transition-shadow hover:shadow-[0_0_20px_0px_rgba(0,255,255,0.18)] sm:p-4"
     >
       {/* تصویر — چون dir:rtl هست، اولین child یعنی سمت راست (مطابق موکاپ) */}
-      <div className="relative aspect-[16/6] lg:aspect-auto lg:h-[400px]  w-full shrink-0 overflow-hidden rounded-xl bg-surface  lg:w-60 xl:w-full">
+      <div className="relative aspect-[16/6] lg:aspect-auto lg:h-[400px]  w-full shrink-0 overflow-hidden rounded-xl bg-surface  lg:w-full">
         <Image
           src={imageSrc}
           alt={academy.name}
@@ -140,23 +140,4 @@ export default function AcademyListItem({ academy, priority = false, isNew = fal
 }
 
 /** اسکلتون هم‌سایز، برای Suspense/loading.tsx */
-export function AcademyListItemSkeleton() {
-  return (
-    <div className="flex gap-4 rounded-2xl border border-border bg-card p-3 sm:p-4">
-      <div className="aspect-square w-24 shrink-0 animate-pulse rounded-xl bg-surface-2 sm:w-40 md:w-48" />
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <div className="h-4 w-2/3 animate-pulse rounded bg-surface-2" />
-        <div className="flex gap-1.5">
-          <div className="h-5 w-24 animate-pulse rounded bg-surface-2" />
-          <div className="h-5 w-20 animate-pulse rounded bg-surface-2" />
-        </div>
-        <div className="h-3 w-16 animate-pulse rounded bg-surface-2" />
-        <div className="h-3 w-40 animate-pulse rounded bg-surface-2" />
-        <div className="mt-auto flex gap-4 pt-1">
-          <div className="h-3 w-20 animate-pulse rounded bg-surface-2" />
-          <div className="h-3 w-20 animate-pulse rounded bg-surface-2" />
-        </div>
-      </div>
-    </div>
-  );
-}
+export function AcademyListItemSkeleton() { return ( <div className="group relative flex flex-col gap-4 rounded-2xl border border-border bg-card p-3 sm:p-4"> {/* تصویر — دقیقاً مثل کارت اصلی */} <div className="relative aspect-[16/6] w-full shrink-0 animate-pulse overflow-hidden rounded-xl bg-surface-2 lg:aspect-auto lg:h-[400px] lg:w-full" /> {/* محتوا — دقیقاً مثل کارت اصلی */} <div className="flex min-w-0 flex-1 flex-col gap-1.5"> {/* عنوان + بوکمارک */} <div className="flex items-start justify-between gap-2"> <div className="h-5 w-2/3 animate-pulse rounded bg-surface-2" /> <div className="h-8 w-8 shrink-0 animate-pulse rounded-full bg-surface-2" /> </div> {/* دوره‌ها */} <div className="mt-4 flex flex-wrap items-center gap-1.5"> <div className="h-7 w-40 animate-pulse rounded-md bg-surface-2" /> <div className="h-7 w-32 animate-pulse rounded-md bg-surface-2" /> </div> {/* شهر */} <div className="flex items-center gap-2"> <div className="h-3.5 w-3.5 shrink-0 animate-pulse rounded-full bg-surface-2" /> <div className="h-4 w-20 animate-pulse rounded bg-surface-2" /> </div> {/* آدرس */} <div className="my-2 flex items-start gap-2"> <div className="h-3.5 w-3.5 shrink-0 rounded-full bg-transparent" /> <div className="h-4 w-3/4 animate-pulse rounded bg-surface-2" /> </div> {/* شماره‌ها */} <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1"> <div className="h-4 w-28 animate-pulse rounded bg-surface-2" /> <div className="h-4 w-28 animate-pulse rounded bg-surface-2" /> </div> {/* تگ‌ها + جنسیت */} <div className="flex flex-wrap items-center gap-1.5 pt-1"> <div className="h-6 w-16 animate-pulse rounded-md bg-surface-2" /> <div className="h-6 w-20 animate-pulse rounded-md bg-surface-2" /> <div className="h-7 w-20 animate-pulse rounded-full bg-surface-2" /> </div> </div> </div> ); }
