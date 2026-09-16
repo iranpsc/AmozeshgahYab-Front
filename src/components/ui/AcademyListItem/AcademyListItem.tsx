@@ -38,14 +38,14 @@ export default function AcademyListItem({ academy, priority = false, isNew = fal
       className="group relative flex flex-col lg:flex-row gap-4 rounded-2xl border border-border bg-card p-3 transition-shadow hover:shadow-[0_0_20px_0px_rgba(0,255,255,0.18)] sm:p-4"
     >
       {/* تصویر — چون dir:rtl هست، اولین child یعنی سمت راست (مطابق موکاپ) */}
-      <div className="relative aspect-video lg:aspect-square w-full shrink-0 overflow-hidden rounded-xl bg-surface  lg:w-60">
+      <div className="relative aspect-[16/6] lg:aspect-video w-full shrink-0 overflow-hidden rounded-xl bg-surface  lg:w-60 xl:w-100">
         <Image
           src={imageSrc}
           alt={academy.name}
           fill
-          sizes="(max-width: 640px) 96px, (max-width: 768px) 160px, 192px"
+          sizes="(max-width: 640px) 400px, (max-width: 768px) 160px, 192px"
           priority={priority}
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className=" transition-transform duration-300 group-hover:scale-105"
         />
         {isNew && (
           <span className="absolute right-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
