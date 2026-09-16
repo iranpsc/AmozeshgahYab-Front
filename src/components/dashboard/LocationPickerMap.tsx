@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect } from "react";
@@ -16,11 +17,14 @@ import "leaflet/dist/leaflet.css";
 // می‌گیریمش، ساده‌ترین راه بدون نیاز به کپی‌کردن فایل تو public/.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 delete (L.Icon.Default.prototype as any)._getIconUrl;
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
 /** مرکز پیش‌فرض روی تهران، وقتی هنوز مختصاتی انتخاب نشده */
@@ -28,26 +32,45 @@ const DEFAULT_CENTER: [number, number] = [35.6892, 51.389];
 const DEFAULT_ZOOM = 12;
 const SELECTED_ZOOM = 15;
 
+/**
+ * حداکثر ۹ رقم اعشار برای مختصات
+ *
+ * مثال:
+ * 35.6892123456789 -> 35.689212346
+ * 51.389123456789  -> 51.389123457
+ */
+function limitCoordinate(value: number): number {
+  return Number(value.toFixed(6));
+}
+
 type Props = {
   latitude: number | null;
   longitude: number | null;
   onChange?: (lat: number, lng: number) => void;
   /** وقتی true باشه، فقط نمایشه — نه کلیک نه درگ‌کردن مارکر */
   readOnly?: boolean;
-};
+}
 
 /** کلیک روی هر نقطه‌ی نقشه = همون‌جا به‌عنوان مختصات انتخاب می‌شه */
-function ClickHandler({ onChange }: { onChange: NonNullable<Props["onChange"]> }) {
+function ClickHandler({
+  onChange,
+}: {
+  onChange: NonNullable<Props["onChange"]>;
+}) {
   useMapEvents({
     click(e) {
-      onChange(e.latlng.lat, e.latlng.lng);
+      const latitude = limitCoordinate(e.latlng.lat);
+      const longitude = limitCoordinate(e.latlng.lng);
+
+      onChange(latitude, longitude);
     },
   });
+
   return null;
 }
 
-/** وقتی مقدار latitude/longitude از بیرون (مثلاً دکمه‌ی «دریافت موقعیت من» یا
- * تایپ دستی تو اینپوت) عوض بشه، نقشه هم خودش رو با یه پرش نرم به همون نقطه ببره */
+/** وقتی مقدار latitude/longitude از بیرون (مثلاً دکمه‌ی «دریافت موقعیت من»
+ * یا تایپ دستی تو اینپوت) عوض بشه، نقشه هم خودش رو با یه پرش نرم به همون نقطه ببره */
 function RecenterOnChange({
   latitude,
   longitude,
@@ -73,6 +96,7 @@ export default function LocationPickerMap({
   readOnly = false,
 }: Props) {
   const hasPosition = latitude !== null && longitude !== null;
+
   const center: [number, number] = hasPosition
     ? [latitude, longitude]
     : DEFAULT_CENTER;
@@ -91,7 +115,11 @@ export default function LocationPickerMap({
         />
 
         {!readOnly && onChange && <ClickHandler onChange={onChange} />}
-        <RecenterOnChange latitude={latitude} longitude={longitude} />
+
+        <RecenterOnChange
+          latitude={latitude}
+          longitude={longitude}
+        />
 
         {hasPosition && (
           <Marker
@@ -103,7 +131,11 @@ export default function LocationPickerMap({
                 : {
                     dragend: (e) => {
                       const pos = e.target.getLatLng();
-                      onChange?.(pos.lat, pos.lng);
+
+                      const latitude = limitCoordinate(pos.lat);
+                      const longitude = limitCoordinate(pos.lng);
+
+                      onChange?.(latitude, longitude);
                     },
                   }
             }
@@ -113,3 +145,4 @@ export default function LocationPickerMap({
     </div>
   );
 }
+

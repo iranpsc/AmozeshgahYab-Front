@@ -27,8 +27,8 @@ const socialLinks = [
 const POPULAR_COUNT = 6;
 
 const headingClass = "mb-5 text-sm font-bold text-primary sm:text-base";
-const linkClass = "text-sm leading-7 text-secondary-foreground/65 transition-colors hover:text-secondary-foreground";
-const disabledClass = "cursor-not-allowed text-sm leading-7 text-secondary-foreground/30";
+const linkClass = "text-sm leading-7 text-foreground/65 transition-colors hover:text-foreground";
+const disabledClass = "cursor-not-allowed text-sm leading-7 text--foreground/30";
 
 /**
  * Server Component (بدون "use client" — هیچ تعامل کلاینتی لازم نیست، همه‌چیز
@@ -52,7 +52,7 @@ export default async function Footer() {
   }
 
   return (
-    <footer className="bg-secondary text-secondary-foreground">
+    <footer className="bg-background text-foreground">
       <div className="mx-auto  px-4 py-14 lg:px-8 2xl:px-20">
         <div className="grid gap-10 lg:grid-cols-5">
           {/* برند + شبکه‌های اجتماعی (فعلاً بدون لینک واقعی) */}
@@ -65,11 +65,11 @@ export default async function Footer() {
                             height={40}
                             />
               </span>
-              <span className="text-lg font-bold text-secondary-foreground">
+              <span className="text-lg font-bold text-foreground">
                 آموزشگاه‌یاب
               </span>
             </div>
-            <p className="text-sm leading-7 text-secondary-foreground/65">
+            <p className="text-sm leading-7 text-foreground/65">
               همراه شما در مسیر یادگیری بهتر
             </p>
             <div className="mt-5 flex items-center gap-2">
@@ -78,7 +78,7 @@ export default async function Footer() {
                   key={label}
                   title={label}
                   
-                  className="grid h-10 w-10 cursor-not-allowed place-items-center rounded-lg bg-white/5 text-secondary-foreground/30"
+                  className="grid h-10 w-10 cursor-not-allowed place-items-center rounded-lg bg-white/5 text-foreground/30"
                 >
                   <Icon size={16} />
                 </span>
@@ -99,7 +99,7 @@ export default async function Footer() {
 
               <li className="flex items-center gap-3">
                 <FaMobileScreenButton size={17} className="shrink-0 text-primary" />
-                <a href="tel:09120820120" className={linkClass}>
+                <a  href="tel:09120820120" className={linkClass}>
                   تلفن همراه: 09120820120
                 </a>
               </li>
@@ -113,14 +113,14 @@ export default async function Footer() {
 
               <li className="flex items-start gap-3">
                 <FaClock size={17} className="mt-0.5 shrink-0 text-primary" />
-                <span className="text-sm leading-7 text-secondary-foreground/65">
+                <span className="text-sm leading-7 text-foreground/65">
                   شنبه تا پنجشنبه ۸:۰۰ الی ۱۸:۰۰
                 </span>
               </li>
 
               <li className="flex items-start gap-3">
                 <FaLocationDot size={17} className="mt-0.5 shrink-0 text-primary" />
-                <span className="text-sm leading-7 text-secondary-foreground/65">
+                <span className="text-sm leading-7 text-foreground/65">
                   آدرس دفتر قزوین - ملاصدرا - خیابان میرداماد - نبش بن بست پویا - پلاک 45
                   شماره تماس موبایل 09127855049
                 </span>
@@ -188,12 +188,12 @@ export default async function Footer() {
         </div>
 
         {/* درباره سامانه + اینماد — دیتا و کد اینماد کاملاً دست‌نخورده، فقط جای مناسب */}
-        <div className="mt-12 grid gap-10 border-t border-white/10 pt-10 lg:grid-cols-2">
+        <div className="mt-12 grid gap-10 border-t border-foreground/20 pt-10 lg:grid-cols-2">
           <div>
             <h3 className="mb-5 text-lg font-bold text-primary sm:text-xl">
               درباره سامانه آموزشگاه یاب
             </h3>
-            <p className="text-sm leading-8 text-secondary-foreground/65">
+            <p className="text-sm leading-8 text-foreground/65">
               سامانه آموزشگاه یک سیستم مدیریت آموزشی مدرن است که برای
               مدیریت ثبت‌نام، کلاس‌ها، اساتید و هنرجویان طراحی شده و
               امکانات کاملی برای مدیریت فرآیندهای آموزشی فراهم می‌کند.
@@ -210,15 +210,15 @@ export default async function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-sm text-secondary-foreground/50 md:flex-row lg:px-8">
+      <div className="border-t border-foreground/20">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-sm text-foreground/50 md:flex-row lg:px-8">
           <span>© {new Date().getFullYear()} تمامی حقوق محفوظ است.</span>
 
           <div className="flex items-center gap-5">
-            <Link href="/" className="transition-colors hover:text-secondary-foreground">
+            <Link href="/" className="transition-colors hover:text-foreground">
               amoozeshgahyab.ir
             </Link>
-            <span title="به‌زودی" aria-disabled="true" className="cursor-not-allowed text-secondary-foreground/30">
+            <span title="به‌زودی" aria-disabled="true" className="cursor-not-allowed text-foreground/30">
               قوانین و مقررات
             </span>
           </div>
