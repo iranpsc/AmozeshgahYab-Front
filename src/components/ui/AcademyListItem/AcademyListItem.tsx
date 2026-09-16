@@ -35,15 +35,15 @@ export default function AcademyListItem({ academy, priority = false, isNew = fal
   return (
     <Link
       href={academy.href}
-      className="group relative flex flex-col lg:flex-row gap-4 rounded-2xl border border-border bg-card p-3 transition-shadow hover:shadow-[0_0_20px_0px_rgba(0,255,255,0.18)] sm:p-4"
+      className="group relative flex flex-col  gap-4 rounded-2xl border border-border bg-card p-3 transition-shadow hover:shadow-[0_0_20px_0px_rgba(0,255,255,0.18)] sm:p-4"
     >
       {/* تصویر — چون dir:rtl هست، اولین child یعنی سمت راست (مطابق موکاپ) */}
-      <div className="relative aspect-[16/6] lg:aspect-video w-full shrink-0 overflow-hidden rounded-xl bg-surface  lg:w-60 xl:w-100">
+      <div className="relative aspect-[16/6] lg:aspect-auto lg:h-[400px]  w-full shrink-0 overflow-hidden rounded-xl bg-surface  lg:w-60 xl:w-full">
         <Image
           src={imageSrc}
           alt={academy.name}
           fill
-          sizes="(max-width: 640px) 400px, (max-width: 768px) 160px, 192px"
+          sizes="(max-width: 640px) 400px, (max-width: 768px) 350px, 1000px"
           priority={priority}
           className=" transition-transform duration-300 group-hover:scale-105"
         />
