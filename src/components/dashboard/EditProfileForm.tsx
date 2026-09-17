@@ -12,6 +12,7 @@ import Select from "@/components/form/Select";
 import Button from "@/components/form/Button";
 import {
   validateInstitute,
+  sanitizeSlugInput,
 } from "@/utils/validation/institute";
 import useFormErrors from "@/hooks/useFormErrors";
 
@@ -57,6 +58,7 @@ export interface InstituteProfile {
   city?: number;
   latitude?: string;
   longitude?: string;
+  slug?: string;
   status: string;
 }
 
@@ -78,6 +80,7 @@ interface Props {
     postal_code: string;
     latitude: string;
     longitude: string;
+    slug: string;
   }) => Promise<void>;
 
   onCancel: () => void;
@@ -109,6 +112,7 @@ const {
     city: profile.city ?? 0,
     latitude: profile.latitude ?? "",
     longitude: profile.longitude ?? "",
+    slug: profile.slug ?? "",
   });
 
   const filteredCities = useMemo(() => {
@@ -140,6 +144,15 @@ const {
       setForm((prev) => ({
         ...prev,
         city: Number(value),
+      }));
+
+      return;
+    }
+
+    if (name === "slug") {
+      setForm((prev) => ({
+        ...prev,
+        slug: sanitizeSlugInput(value),
       }));
 
       return;
@@ -198,6 +211,7 @@ async function submit(
     postal_code: form.postal_code,
     latitude: form.latitude,
     longitude: form.longitude,
+    slug: form.slug,
   });
 
   if (Object.keys(validationErrors).length) {
@@ -219,6 +233,7 @@ try {
     postal_code: form.postal_code,
     latitude: form.latitude,
     longitude: form.longitude,
+    slug: form.slug,
   });
 
 } catch (err) {
@@ -250,6 +265,23 @@ try {
             onChange={handleChange}
             error={!!errors.institute_name}
           />
+        </FormField>
+
+        <FormField
+          label="اسلاگ (آدرس صفحه)"
+          error={errors.slug}
+        >
+          <Input
+            name="slug"
+            dir="ltr"
+            value={form.slug}
+            onChange={handleChange}
+            error={!!errors.slug}
+            placeholder="example-institute"
+          />
+          <p className="text-xs text-muted-foreground">
+            فقط حروف انگلیسی کوچک، عدد و خط تیره — به‌جای فاصله از «-» استفاده می‌شود.
+          </p>
         </FormField>
 
         <FormField

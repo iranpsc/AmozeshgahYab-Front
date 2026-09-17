@@ -13,6 +13,7 @@ import Button from "@/components/form/Button";
 
 import {
   validateInstitute,
+  sanitizeSlugInput,
 } from "@/utils/validation/institute";
 import useFormErrors from "@/hooks/useFormErrors";
 
@@ -69,6 +70,7 @@ interface CreateProfileFormProps {
     postal_code: string;
     latitude: string;
     longitude: string;
+    slug: string;
   }) => Promise<void>;
 }
 
@@ -96,6 +98,7 @@ export default function CreateProfileForm({
     postal_code: "",
     latitude: "",
     longitude: "",
+    slug: "",
   });
 
   const filteredCities = useMemo(() => {
@@ -128,6 +131,14 @@ function handleChange(
     setForm((prev) => ({
       ...prev,
       city: Number(value),
+    }));
+    return;
+  }
+
+  if (name === "slug") {
+    setForm((prev) => ({
+      ...prev,
+      slug: sanitizeSlugInput(value),
     }));
     return;
   }
@@ -187,6 +198,7 @@ function handleChange(
       postal_code: form.postal_code,
       latitude: form.latitude,
       longitude: form.longitude,
+      slug: form.slug,
     });
 
     if (Object.keys(validationErrors).length > 0) {
@@ -207,6 +219,7 @@ function handleChange(
         postal_code: form.postal_code,
         latitude: form.latitude,
         longitude: form.longitude,
+        slug: form.slug,
       });
     } catch (err) {
       setBackendErrors(err);
@@ -235,6 +248,23 @@ function handleChange(
               error={!!errors.institute_name}
               placeholder="نام آموزشگاه"
             />
+          </FormField>
+
+          <FormField
+            label="اسلاگ (آدرس صفحه)"
+            error={errors.slug}
+          >
+            <Input
+              name="slug"
+              dir="ltr"
+              value={form.slug}
+              onChange={handleChange}
+              error={!!errors.slug}
+              placeholder="example-institute"
+            />
+            <p className="text-xs text-muted-foreground">
+              فقط حروف انگلیسی کوچک، عدد و خط تیره — به‌جای فاصله از «-» استفاده می‌شود. اگر خالی بماند، خودکار ساخته می‌شود.
+            </p>
           </FormField>
 
           <FormField

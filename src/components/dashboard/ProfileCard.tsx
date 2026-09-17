@@ -8,6 +8,7 @@ interface InstituteProfile {
   gender?: string;
   latitude?: string;
   longitude?: string;
+  slug?: string;
   status: string;
 }
 
@@ -68,6 +69,12 @@ export default function ProfileCard({
         />
 
         <InfoCard
+          title="اسلاگ (آدرس صفحه)"
+          value={profile.slug || "—"}
+          dir="ltr"
+        />
+
+        <InfoCard
           title="شماره موبایل"
           value={profile.mobile_number}
         />
@@ -125,11 +132,13 @@ export default function ProfileCard({
 interface InfoCardProps {
   title: string;
   value: string;
+  dir?: "rtl" | "ltr";
 }
 
 function InfoCard({
   title,
   value,
+  dir = "rtl",
 }: InfoCardProps) {
   return (
     <div className="rounded-2xl border border-border bg-card p-6">
@@ -138,7 +147,7 @@ function InfoCard({
         {title}
       </p>
 
-      <p className="text-lg font-semibold">
+      <p className="text-lg font-semibold" dir={dir}>
         {value}
       </p>
 

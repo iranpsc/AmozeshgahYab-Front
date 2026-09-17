@@ -10,9 +10,23 @@ export type InstituteForm = {
   postal_code: string;
   latitude?: string;
   longitude?: string;
+  /** اختیاریه (طبق اسکیما) — اگه خالی بمونه بک‌اند خودش می‌سازتش */
+  slug?: string;
 };
 
 export type FormErrors = Record<string, string>;
+
+/**
+ * موقع تایپ تو اینپوت اسلاگ صدا زده می‌شه: فقط حروف/عدد انگلیسی و خط تیره
+ * می‌مونه، بقیه (فاصله، فارسی، کاراکترهای خاص) حذف می‌شن و فاصله جای خط تیره می‌شینه.
+ */
+export function sanitizeSlugInput(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-");
+}
 
 export function validateInstitute(
   data: InstituteForm
@@ -67,6 +81,12 @@ export function validateInstitute(
   if (data.longitude !== undefined && (!data.longitude.trim() || Number.isNaN(Number(data.longitude)))) {
     errors.longitude =
       "طول جغرافیایی معتبر نیست.";
+  }
+
+  // اسلاگ اختیاریه، ولی اگه پر شده باشه باید فقط حروف/عدد انگلیسی و خط تیره باشه
+  if (data.slug && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(data.slug)) {
+    errors.slug =
+      "اسلاگ فقط می‌تواند حروف کوچک انگلیسی، عدد و خط تیره باشد.";
   }
 
   return errors;

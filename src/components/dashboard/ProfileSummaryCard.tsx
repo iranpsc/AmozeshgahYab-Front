@@ -25,9 +25,11 @@ interface Props {
 function Item({
   title,
   value,
+  dir = "rtl",
 }: {
   title: string;
   value: React.ReactNode;
+  dir?: "rtl" | "ltr";
 }) {
   return (
     <div className="rounded-2xl border border-border bg-surface p-4">
@@ -35,7 +37,7 @@ function Item({
         {title}
       </p>
 
-      <p className="break-words text-base font-bold text-foreground">
+      <p className="break-words text-base font-bold text-foreground" dir={dir}>
         {value || "-"}
       </p>
     </div>
@@ -47,7 +49,7 @@ export default function ProfileSummaryCard({
   logoUrl,
 }: Props) {
   const publicUrl = profile.slug
-    ? `/academies/${profile.slug}`
+    ? `/${profile.slug}`
     : null;
 
   const latitude = profile.latitude ? Number(profile.latitude) : null;
@@ -111,6 +113,16 @@ export default function ProfileSummaryCard({
           title="نام آموزشگاه"
           value={profile.institute_name}
         />
+        <Link href={publicUrl || "/academies"}
+          target="_blank"
+          rel="noopener noreferrer">
+          <Item
+            title="اسلاگ (آدرس صفحه)"
+            value={profile.slug}
+            dir="ltr"
+          />
+        </Link>
+
 
         <div className="grid gap-5 md:grid-cols-2">
 

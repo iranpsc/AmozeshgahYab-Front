@@ -56,10 +56,10 @@ async function handler(
 
   let response = await request();
 
-  console.log("Backend Status:", response.status);
+  // console.log("Backend Status:", response.status);
 
-  const responseText = await response.clone().text();
-  console.log("Backend Body:", responseText);
+  // const responseText = await response.clone().text();
+  // console.log("Backend Body:", responseText);
 
   // =====================
   // ACCESS EXPIRED
