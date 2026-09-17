@@ -17,6 +17,7 @@ export const DEFAULT_PROVINCE_NAME = "قزوین";
 export const DEFAULT_PAGE_SIZE = 10;
 
 export type AcademyCardData = {
+  // slug: any;
   id: number;
   name: string;
   href: string;
@@ -151,7 +152,7 @@ export function mapInstituteToCard(institute: HomeInstitute): AcademyCardData {
   return {
     id: institute.id,
     name: institute.institute_name,
-    href: `/academies/${institute.slug}`,
+    href: `/${institute.slug}`,
     imageUrl: resolveImageUrl(institute.banner) ?? resolveImageUrl(institute.logo),
     cityName: institute.city?.name || "نامشخص",
     address: institute.address,
@@ -184,7 +185,7 @@ export function mapInstituteToListItem(institute: HomeInstitute): AcademyListIte
   return {
     id: institute.id,
     slug: institute.slug,
-    href: `/academies/${institute.slug}`,
+    href: `/${institute.slug}`,
     name: institute.institute_name,
     imageUrl: resolveImageUrl(institute.banner) ?? resolveImageUrl(institute.logo),
     logoUrl: resolveImageUrl(institute.logo),

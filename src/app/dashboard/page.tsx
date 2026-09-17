@@ -169,6 +169,7 @@ export default function Dashboard() {
     postal_code: string;
     latitude: string;
     longitude: string;
+    slug: string;
   }) {
     try {
       const res = await api.post(
@@ -193,6 +194,7 @@ export default function Dashboard() {
     postal_code: string;
     latitude: string;
     longitude: string;
+    slug: string;
   }) {
     await api.put(
       "/academy/institute/profile/",

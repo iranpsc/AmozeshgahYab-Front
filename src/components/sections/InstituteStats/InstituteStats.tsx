@@ -19,7 +19,7 @@ export default function InstituteStats({ institute }: Props) {
   ].filter((x): x is NonNullable<typeof x> => Boolean(x));
 
   return (
-    <div className="grid grid-cols-2 gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-3 lg:flex lg:flex-wrap lg:items-center lg:justify-between lg:gap-0 ">
+    <div className="grid grid-cols-2 gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-3 lg:flex lg:flex-wrap lg:items-center lg:justify-evenly lg:gap-0 ">
       {items.map(({ label, value, icon: Icon }) => (
         <div key={label} className="flex items-center gap-2 px-3 ">
           <span className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-primary-light text-primary">

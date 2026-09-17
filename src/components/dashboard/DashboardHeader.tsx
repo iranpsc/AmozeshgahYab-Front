@@ -20,7 +20,7 @@ export default function DashboardHeader({
           </h1>
 
           {subtitle && (
-            <p className="mt-2 text-sm text-secondary-foreground/70">
+            <p className="mt-2 text-sm text-foreground/70">
               {subtitle}
             </p>
           )}

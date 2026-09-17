@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { FaLocationArrow } from "react-icons/fa";
 
 import FormField from "@/components/form/FormField";
@@ -11,8 +12,22 @@ import Select from "@/components/form/Select";
 import Button from "@/components/form/Button";
 import {
   validateInstitute,
+  sanitizeSlugInput,
 } from "@/utils/validation/institute";
 import useFormErrors from "@/hooks/useFormErrors";
+
+const LocationPickerMap = dynamic(
+  () => import("@/components/dashboard/LocationPickerMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 w-full items-center justify-center rounded-xl border border-input bg-surface text-sm text-muted-foreground">
+        در حال بارگذاری نقشه...
+      </div>
+    ),
+  }
+);
+
 interface Province {
   id: number;
   name: string;
@@ -43,6 +58,7 @@ export interface InstituteProfile {
   city?: number;
   latitude?: string;
   longitude?: string;
+  slug?: string;
   status: string;
 }
 
@@ -64,6 +80,7 @@ interface Props {
     postal_code: string;
     latitude: string;
     longitude: string;
+    slug: string;
   }) => Promise<void>;
 
   onCancel: () => void;
@@ -95,6 +112,7 @@ const {
     city: profile.city ?? 0,
     latitude: profile.latitude ?? "",
     longitude: profile.longitude ?? "",
+    slug: profile.slug ?? "",
   });
 
   const filteredCities = useMemo(() => {
@@ -126,6 +144,15 @@ const {
       setForm((prev) => ({
         ...prev,
         city: Number(value),
+      }));
+
+      return;
+    }
+
+    if (name === "slug") {
+      setForm((prev) => ({
+        ...prev,
+        slug: sanitizeSlugInput(value),
       }));
 
       return;
@@ -184,6 +211,7 @@ async function submit(
     postal_code: form.postal_code,
     latitude: form.latitude,
     longitude: form.longitude,
+    slug: form.slug,
   });
 
   if (Object.keys(validationErrors).length) {
@@ -205,6 +233,7 @@ try {
     postal_code: form.postal_code,
     latitude: form.latitude,
     longitude: form.longitude,
+    slug: form.slug,
   });
 
 } catch (err) {
@@ -236,6 +265,23 @@ try {
             onChange={handleChange}
             error={!!errors.institute_name}
           />
+        </FormField>
+
+        <FormField
+          label="اسلاگ (آدرس صفحه)"
+          error={errors.slug}
+        >
+          <Input
+            name="slug"
+            dir="ltr"
+            value={form.slug}
+            onChange={handleChange}
+            error={!!errors.slug}
+            placeholder="example-institute"
+          />
+          <p className="text-xs text-muted-foreground">
+            فقط حروف انگلیسی کوچک، عدد و خط تیره — به‌جای فاصله از «-» استفاده می‌شود.
+          </p>
         </FormField>
 
         <FormField
@@ -386,6 +432,20 @@ try {
             {locating ? "در حال دریافت موقعیت..." : "دریافت موقعیت من"}
           </button>
         </div>
+
+          <LocationPickerMap
+            latitude={form.latitude ? Number(form.latitude) : null}
+            longitude={form.longitude ? Number(form.longitude) : null}
+            onChange={(lat, lng) => {
+              clearErrors("latitude");
+              clearErrors("longitude");
+              setForm((prev) => ({
+                ...prev,
+                latitude: String(lat),
+                longitude: String(lng),
+              }));
+            }}
+          />
 
         <FormGrid cols={2}>
           <FormField label="عرض جغرافیایی" error={errors.latitude}>

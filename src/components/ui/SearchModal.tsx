@@ -115,7 +115,7 @@ export default function SearchModal({ open, onClose }: Props) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="نام آموزشگاه یا دوره را جستجو کنید..."
-            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+            className="w-full bg-transparent text-base text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
           {loading && <FaSpinner size={15} className="shrink-0 animate-spin text-muted-foreground" />}
           <button

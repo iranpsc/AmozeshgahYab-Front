@@ -72,7 +72,7 @@ export default function CompletedDashboard({
       <div className="grid gap-8 xl:grid-cols-2">
 
 <div>
-          <ProfileSummaryCard profile={profile} />
+          <ProfileSummaryCard profile={profile} logoUrl={branding.logo} />
   <button
     onClick={onEditProfile}
     className="rounded-xl border mt-5 w-full border-border bg-transparent px-5 py-3 font-medium text-foreground transition hover:bg-surface cursor-pointer"

@@ -46,7 +46,7 @@ export default function InstituteHero({ institute }: Props) {
               priority
               fetchPriority="high"
               sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-cover rounded-2xl lg:rounded-none"
+              className="object-contain rounded-2xl lg:rounded-none"
             />
 
             {/* فید به رنگِ دقیقِ bg-card خودِ کارت — عکس تدریجی تو پس‌زمینه محو می‌شه
@@ -58,7 +58,7 @@ export default function InstituteHero({ institute }: Props) {
               className="pointer-events-none absolute inset-0 hidden lg:block"
               style={{
                 backgroundImage:
-                  "linear-gradient(to right, transparent 0%, transparent 28%, var(--card) 79%)",
+                   "linear-gradient(to right, var(--card) 15.5%, transparent 40%, transparent 70%, var(--card) 84.5%)",
               }}
             />
 
