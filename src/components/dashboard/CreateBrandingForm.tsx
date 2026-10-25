@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import FormField from "@/components/form/FormField";
 import Button from "@/components/form/Button";
 import useFormErrors from "@/hooks/useFormErrors";
+import Textarea from "@/components/form/Textarea";
 import ImageCropperModal from "@/components/ImageCropper/ImageCropperModal";
 
 interface Course {
@@ -26,6 +27,7 @@ interface Props {
   onSubmit?: (data: {
     courses: number[];
     subcourses: number[];
+    about: string;
     logo: File | null;
     banner: File | null;
   }) => Promise<void>;
@@ -52,6 +54,9 @@ export default function CreateBrandingForm({
     useState("");
 
   const [subcourseSearch, setSubcourseSearch] =
+    useState("");
+
+  const [about, setAbout] =
     useState("");
 
   const [logo, setLogo] =
@@ -141,6 +146,7 @@ export default function CreateBrandingForm({
       await onSubmit({
         courses: selectedCourses,
         subcourses: selectedSubcourses,
+        about,
         logo,
         banner,
       });
@@ -425,6 +431,25 @@ export default function CreateBrandingForm({
           </div>
         </FormField>
       )}
+
+      {/* =========================
+          ABOUT
+      ========================== */}
+
+      <FormField
+        label="درباره آموزشگاه"
+        error={errors.about}
+      >
+        <Textarea
+          rows={5}
+          value={about}
+          onChange={(e) =>
+            setAbout(e.target.value)
+          }
+          placeholder="توضیحی درباره آموزشگاه بنویسید..."
+          error={!!errors.about}
+        />
+      </FormField>
 
       {/* =========================
           LOGO

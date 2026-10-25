@@ -13,7 +13,7 @@ import {
   FaTwitter,
   FaGraduationCap,
 } from "react-icons/fa";
-import { getCourses, getCities } from "@/lib/academies";
+import { getCoursesPage, getCitiesPage } from "@/lib/academies";
 import { navItems } from "./header/nav-items";
 import Image from "next/image";
 
@@ -36,17 +36,18 @@ const disabledClass = "cursor-not-allowed text-sm leading-7 text--foreground/30"
  * رنگ‌ها از سیستم دیزاین (--secondary, --primary) می‌آن، نه هاردکد.
  */
 export default async function Footer() {
-  let popularCourses: Awaited<ReturnType<typeof getCourses>> = [];
-  let popularCities: Awaited<ReturnType<typeof getCities>> = [];
+  let popularCourses: Awaited<ReturnType<typeof getCoursesPage>>["results"] = [];
+  let popularCities: Awaited<ReturnType<typeof getCitiesPage>>["results"] = [];
 
   try {
-    popularCourses = (await getCourses()).slice(0, POPULAR_COUNT);
+    // فقط صفحه‌ی اول کافیه — برای ۶ مورد محبوب لازم نیست همه‌ی صفحه‌ها گرفته بشن
+    popularCourses = (await getCoursesPage(1)).results.slice(0, POPULAR_COUNT);
   } catch (error) {
     console.error("Footer courses fetch failed:", error);
   }
 
   try {
-    popularCities = (await getCities()).slice(0, POPULAR_COUNT);
+    popularCities = (await getCitiesPage(1)).results.slice(0, POPULAR_COUNT);
   } catch (error) {
     console.error("Footer cities fetch failed:", error);
   }

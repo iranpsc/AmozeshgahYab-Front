@@ -14,7 +14,7 @@ export default function InstituteAbout({ institute }: Props) {
         <FaInfoCircle size={20} className="text-primary text-xl" />
         درباره آموزشگاه
       </h2>
-      <p className="text-sm leading-7 text-muted-foreground mt-5">{institute.description}</p>
+      <p className="text-sm xl:text-base leading-7 text-muted-foreground mt-5">{institute.description}</p>
     </section>
   );
 }

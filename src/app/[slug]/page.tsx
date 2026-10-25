@@ -8,6 +8,7 @@ import {
   mapInstituteToDetail,
   ApiError,
 } from "@/lib/academies";
+import type { InstituteDetailQuery } from "@/lib/academies";
 
 import { SITE_NAME, absoluteUrl } from "@/lib/site-config";
 
@@ -21,21 +22,47 @@ import InstituteLocation, {
   InstituteContact,
 } from "@/components/sections/InstituteMap";
 
+type SearchParams = Record<string, string | string[] | undefined>;
+
 type PageProps = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<SearchParams>;
 };
+
+/** عدد صحیح ≥ ۱ از query string؛ مقدار نامعتبر (abc، ۰، منفی) یعنی صفحه‌ی اول */
+function parsePage(value: string | string[] | undefined): number | undefined {
+  const raw = Array.isArray(value) ? value[0] : value;
+  const n = Number(raw);
+  return Number.isInteger(n) && n > 1 ? n : undefined;
+}
+
+/**
+ * صفحه‌بندی دوره‌ها و زیردوره‌ها کاملاً مستقل از همدیگه‌ست:
+ * ?courses_page=2&subcourses_page=3
+ */
+function parseDetailQuery(params: SearchParams): InstituteDetailQuery {
+  return {
+    coursesPage: parsePage(params.courses_page),
+    subcoursesPage: parsePage(params.subcourses_page),
+  };
+}
 
 /* -------------------------------------------------------------------------- */
 /*                                Data Loader                                 */
 /* -------------------------------------------------------------------------- */
 
-async function loadInstitute(slug: string) {
+async function loadInstitute(slug: string, query: InstituteDetailQuery = {}) {
   try {
-    const raw = await getInstituteBySlug(slug);
+    const raw = await getInstituteBySlug(slug, query);
 
-    return mapInstituteToDetail(raw);
+    return mapInstituteToDetail(raw, query);
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) {
+      // 404 با پارامتر صفحه یعنی احتمالاً صفحه‌ی خارج از محدوده (DRF: Invalid page)،
+      // نه آموزشگاه ناموجود — یک بار بدون پارامترها تلاش می‌کنیم تا صفحه‌ی ۱ نشون داده بشه.
+      if (query.coursesPage || query.subcoursesPage) {
+        return loadInstitute(slug);
+      }
       return null;
     }
 
@@ -49,10 +76,15 @@ async function loadInstitute(slug: string) {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
 
-  const institute = await loadInstitute(slug);
+  // همون query صفحه رو پاس می‌دیم تا URL درخواست یکی باشه و fetch کش‌شده‌ی صفحه
+  // دوباره استفاده بشه (به‌جای یک درخواست اضافه فقط برای متادیتا)
+  const query = parseDetailQuery(await searchParams);
+
+  const institute = await loadInstitute(slug, query);
 
   if (!institute) {
     return {
@@ -135,10 +167,12 @@ export async function generateMetadata({
 /*                                   Page                                     */
 /* -------------------------------------------------------------------------- */
 
-export default async function InstitutePage({ params }: PageProps) {
+export default async function InstitutePage({ params, searchParams }: PageProps) {
   const { slug } = await params;
 
-  const institute = await loadInstitute(slug);
+  const query = parseDetailQuery(await searchParams);
+
+  const institute = await loadInstitute(slug, query);
 
   if (!institute) {
     notFound();

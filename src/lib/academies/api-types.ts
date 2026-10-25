@@ -3,6 +3,33 @@
  * این‌ها هیچ‌وقت مستقیم به UI پاس داده نمی‌شن — همیشه از mappers.ts رد می‌شن.
  */
 
+/**
+ * شکل نرمال‌شده‌ی پاسخ صفحه‌بندی‌شده (خروجی normalizePaginated). UI فقط همین رو می‌بینه.
+ */
+export type PaginatedResponse<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+  /** اگه بک‌اند تعداد کل صفحه‌ها رو بده (total_page)، دقیق‌ترین منبع همینه */
+  totalPages?: number;
+};
+
+/**
+ * شکل‌های خام پاسخ صفحه‌بندی‌شده‌ی بک‌اند. دو الگو واقعاً دیده شده:
+ * - DRF استاندارد: { count, next, previous, results } (مثل /academy/home/)
+ * - صفحه‌ی آموزشگاه: { links: { next, previous }, total_object, total_page, results }
+ */
+export type RawPaginated<T> = {
+  results: T[];
+  count?: number;
+  next?: string | null;
+  previous?: string | null;
+  links?: { next?: string | null; previous?: string | null };
+  total_object?: number;
+  total_page?: number;
+};
+
 export type City = {
   id: number;
   name: string;
@@ -67,7 +94,19 @@ export type HomeInstitute = {
  * optional تعریف شدن تا اگه بک‌اند واقعی داشتشون خودکار نمایش داده بشن، وگرنه
  * بخش مربوطه تو UI ساکت مخفی می‌مونه (بدون کرش و بدون دیتای ساختگی).
  */
-export type InstituteDetail = HomeInstitute & {
+export type InstituteDetail = Omit<HomeInstitute, "courses" | "subcourses"> & {
+  /**
+   * courses/subcourses حالا مستقل از هم صفحه‌بندی می‌شن
+   * (?courses_page= و ?subcourses_page=). بسته به نسخه‌ی بک‌اند ممکنه آرایه‌ی ساده
+   * یا آبجکت صفحه‌بندی‌شده (count/next/previous/results) باشن؛ هر دو هندل می‌شه.
+   */
+  courses: Course[] | RawPaginated<Course>;
+  subcourses: Subcourse[] | RawPaginated<Subcourse>;
+  /** تعداد کل (اگه بک‌اند جدا بفرسته) — وگرنه از count پاسخ صفحه‌بندی‌شده خونده می‌شه */
+  courses_count?: number;
+  subcourses_count?: number;
+  /** فیلد «درباره آموزشگاه» (همون about که تو branding هم اضافه شد) */
+  about?: string;
   description?: string;
   rating?: number;
   reviews_count?: number;
@@ -81,11 +120,12 @@ export type InstituteDetail = HomeInstitute & {
   whatsapp?: string;
 };
 
-export type HomeInstituteListResponse = {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: HomeInstitute[];
+export type HomeInstituteListResponse = PaginatedResponse<HomeInstitute>;
+
+/** پارامترهای صفحه‌بندی مستقل صفحه‌ی تکی آموزشگاه */
+export type InstituteDetailQuery = {
+  coursesPage?: number;
+  subcoursesPage?: number;
 };
 
 export type HomeInstituteQuery = {

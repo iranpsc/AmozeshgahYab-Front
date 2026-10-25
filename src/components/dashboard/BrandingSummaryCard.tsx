@@ -67,6 +67,22 @@ export default function BrandingSummaryCard({
 
       <div className="space-y-8 p-8">
 
+        {/* About */}
+
+        {!!branding.about && (
+          <div>
+
+            <h3 className="mb-3 font-bold text-foreground">
+              درباره آموزشگاه
+            </h3>
+
+            <p className="whitespace-pre-line text-sm leading-7 text-muted-foreground">
+              {branding.about}
+            </p>
+
+          </div>
+        )}
+
         {/* Logo */}
 
         <div>

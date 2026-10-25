@@ -32,6 +32,9 @@ export interface InstituteBranding {
   courses: number[];
   subcourses: number[];
 
+  /** درباره آموزشگاه — تو GET/POST/PUT/PATCH /academy/institute/branding/ */
+  about?: string;
+
   logo: string | null;
   logo_problem: string;
 
