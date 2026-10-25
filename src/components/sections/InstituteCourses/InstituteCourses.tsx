@@ -2,6 +2,7 @@ import Image from "next/image";
 import { FaInfoCircle, FaGraduationCap } from "react-icons/fa";
 import type { InstituteDetailData } from "@/lib/academies";
 import HorizontalSlider from "@/components/ui/HorizontalSlider/HorizontalSlider";
+import Pagination from "@/components/ui/Pagination";
 
 type Props = {
   institute: InstituteDetailData;
@@ -11,7 +12,10 @@ export default function InstituteCourses({ institute }: Props) {
   if (institute.courses.length === 0) return null;
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+    <section
+      id="institute-courses"
+      className="rounded-2xl border border-border bg-card p-4 transition-opacity has-[nav[data-pending=true]]:opacity-60 sm:p-6"
+    >
       <h2 className="flex items-center gap-1.5 text-base font-bold text-foreground">
         <FaInfoCircle size={20} className="text-primary text-xl" />
         دوره‌های اصلی آموزشگاه
@@ -32,12 +36,25 @@ export default function InstituteCourses({ institute }: Props) {
               )}
             </span>
             <span className="line-clamp-2 text-sm lg:text-base font-bold text-foreground mt-4">{course.title}</span>
-            <span className="text-xs lg:text-sm text-muted-foreground mt-1">
-              {course.subcoursesCount} زیردوره
-            </span>
+            {course.subcoursesCount !== null && (
+              <span className="text-xs lg:text-sm text-muted-foreground mt-1">
+                {course.subcoursesCount} زیردوره
+              </span>
+            )}
           </div>
         ))}
       </HorizontalSlider>
+
+      {/* صفحه‌بندی مستقل دوره‌ها: فقط ?courses_page= عوض می‌شه، subcourses_page دست‌نخورده می‌مونه */}
+      <Pagination
+        paramName="courses_page"
+        ariaLabel="صفحه‌بندی دوره‌ها"
+        scrollToTop={false}
+        currentPage={institute.coursesPagination.currentPage}
+        totalPages={institute.coursesPagination.totalPages}
+        hasNext={institute.coursesPagination.hasNext}
+        hasPrevious={institute.coursesPagination.hasPrevious}
+      />
     </section>
   );
 }

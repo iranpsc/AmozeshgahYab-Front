@@ -7,6 +7,9 @@ export type {
   HomeInstitute,
   HomeInstituteQuery,
   InstituteDetail,
+  InstituteDetailQuery,
+  PaginatedResponse,
+  RawPaginated,
 } from "./api-types";
 export type {
   AcademyCardData,
@@ -15,14 +18,19 @@ export type {
   InstituteDetailData,
   InstituteCourseCard,
   InstituteSubcourseCard,
+  SectionPagination,
 } from "./queries";
 export {
   getCities,
+  getCitiesPage,
   getProvinces,
   getHomeInstitutes,
   getInstituteBySlug,
   getCourses,
+  getCoursesPage,
   getSubcourses,
+  getSubcoursesPage,
+  normalizePaginated,
   mapInstituteToCard,
   mapInstituteToListItem,
   mapInstituteToDetail,

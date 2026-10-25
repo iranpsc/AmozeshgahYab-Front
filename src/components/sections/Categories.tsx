@@ -1,25 +1,29 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaGraduationCap } from "react-icons/fa";
-import { getCourses, resolveApiUrl } from "@/lib/academies";
+import { getCoursesPage, resolveApiUrl } from "@/lib/academies";
 import EmptyState from "@/components/ui/EmptyState";
 
 const MAX_VISIBLE = 8;
 
 /** async Server Component — همیشه داخل <Suspense> صدا زده بشه. */
 export default async function Categories() {
-  let courses: Awaited<ReturnType<typeof getCourses>> = [];
+  let courses: Awaited<ReturnType<typeof getCoursesPage>>["results"] = [];
+  let totalCount = 0;
   let errorMessage: string | null = null;
 
   try {
-    courses = await getCourses();
+    // فقط صفحه‌ی اول — ۸ مورد نمایش داده می‌شه و count برای دکمه‌ی «سایر» کافیه
+    const page = await getCoursesPage(1);
+    courses = page.results;
+    totalCount = page.count;
   } catch (error) {
     console.error("Categories fetch failed:", error);
     errorMessage = error instanceof Error ? error.message : "خطای ناشناخته";
   }
 
   const visible = courses.slice(0, MAX_VISIBLE);
-  const hasMore = courses.length > MAX_VISIBLE;
+  const hasMore = totalCount > MAX_VISIBLE;
 
   return (
     <section className="w-full px-4 py-8 lg:px-8">

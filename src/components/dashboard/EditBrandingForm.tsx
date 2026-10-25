@@ -8,6 +8,7 @@ import Button from "@/components/form/Button";
 import FormField from "@/components/form/FormField";
 
 import type { InstituteBranding } from "@/services/institute";
+import Textarea from "@/components/form/Textarea";
 import ImageCropperModal from "@/components/ImageCropper/ImageCropperModal";
 
 interface Course {
@@ -30,6 +31,7 @@ interface Props {
   onSubmit: (data: {
     courses: number[];
     subcourses: number[];
+    about: string;
     logo: File | null;
     banner: File | null;
   }) => Promise<void>;
@@ -57,6 +59,9 @@ export default function EditBrandingForm({
 
   const bannerInputRef =
     useRef<HTMLInputElement>(null);
+
+  const [about, setAbout] =
+    useState(branding.about ?? "");
 
   const [logo, setLogo] =
     useState<File | null>(null);
@@ -198,6 +203,7 @@ export default function EditBrandingForm({
       await onSubmit({
         courses: selectedCourses,
         subcourses: selectedSubcourses,
+        about,
         logo,
         banner,
       });
@@ -483,6 +489,25 @@ export default function EditBrandingForm({
           </div>
         </FormField>
       )}
+
+      {/* =====================================================
+          ABOUT
+      ====================================================== */}
+
+      <FormField
+        label="درباره آموزشگاه"
+        error={errors.about}
+      >
+        <Textarea
+          rows={5}
+          value={about}
+          onChange={(e) =>
+            setAbout(e.target.value)
+          }
+          placeholder="توضیحی درباره آموزشگاه بنویسید..."
+          error={!!errors.about}
+        />
+      </FormField>
 
       {/* =====================================================
           LOGO

@@ -11,6 +11,15 @@ type Props = {
   hasNext: boolean;
   /** منبع درستِ فعال/غیرفعال بودن دکمه‌ی «قبلی» — از فیلد previous خودِ API */
   hasPrevious: boolean;
+  /**
+   * اسم query param صفحه تو URL. پیش‌فرض `page`؛ تو صفحه‌ی آموزشگاه برای
+   * صفحه‌بندی مستقل از `courses_page` و `subcourses_page` استفاده می‌شه.
+   */
+  paramName?: string;
+  /** آیا بعد از تغییر صفحه به بالای صفحه اسکرول بشه؟ (برای بخش‌های وسط صفحه false) */
+  scrollToTop?: boolean;
+  /** برچسب aria برای زمانی که چند صفحه‌بندی تو یک صفحه هست */
+  ariaLabel?: string;
 };
 
 /** حداکثر تعداد دکمه‌ی شماره صفحه که همزمان نشون داده می‌شه */
@@ -27,7 +36,15 @@ function getVisiblePages(current: number, total: number): number[] {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-export default function Pagination({ currentPage, totalPages, hasNext, hasPrevious }: Props) {
+export default function Pagination({
+  currentPage,
+  totalPages,
+  hasNext,
+  hasPrevious,
+  paramName = "page",
+  scrollToTop = true,
+  ariaLabel = "صفحه‌بندی",
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -38,10 +55,11 @@ export default function Pagination({ currentPage, totalPages, hasNext, hasPrevio
 
   const goToPage = (page: number) => {
     if (page < 1 || page === currentPage) return;
+    // بقیه‌ی query paramها (فیلترها، صفحه‌ی بخش دیگه و ...) دست‌نخورده می‌مونن
     const params = new URLSearchParams(searchParams.toString());
-    params.set("page", String(page));
+    params.set(paramName, String(page));
     startTransition(() => {
-      router.push(`${pathname}?${params.toString()}`, { scroll: true });
+      router.push(`${pathname}?${params.toString()}`, { scroll: scrollToTop });
     });
   };
 
@@ -49,7 +67,9 @@ export default function Pagination({ currentPage, totalPages, hasNext, hasPrevio
 
   return (
     <nav
-      aria-label="صفحه‌بندی"
+      aria-label={ariaLabel}
+      // والد می‌تونه با has-[nav[data-pending=true]]:opacity-60 بخش خودش رو هنگام لود کم‌رنگ کنه
+      data-pending={isPending}
       className={`flex items-center justify-center gap-2 pt-2 ${isPending ? "opacity-60" : ""}`}
     >
       <button

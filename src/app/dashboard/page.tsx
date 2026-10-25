@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import api from "@/services/api";
 import { logout } from "@/services/auth";
+import { getAllPages } from "@/services/academy";
 
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import Loading from "@/components/dashboard/LoadingScreen";
@@ -82,19 +83,20 @@ export default function Dashboard() {
     ]);
   }, []);
   async function loadLocationData() {
-    const [provinceRes, cityRes, courseRes, subcourseRes] =
+    // شهرها/دوره‌ها/زیردوره‌ها حالا صفحه‌بندی شدن؛ فرم‌ها کل لیست رو لازم دارن،
+    // پس همه‌ی صفحه‌ها رو می‌گیریم (getAllPages next رو دنبال می‌کنه).
+    const [provinceRes, allCities, allCourses, allSubcourses] =
       await Promise.all([
         api.get<Province[]>("/academy/provinces/"),
-        api.get<City[]>("/academy/cities/"),
-        api.get<Course[]>("/academy/courses/"),
-        api.get<Subcourse[]>("/academy/subcourses/"),
+        getAllPages<City>("/academy/cities/"),
+        getAllPages<Course>("/academy/courses/"),
+        getAllPages<Subcourse>("/academy/subcourses/"),
       ]);
 
-
     setProvinces(provinceRes.data);
-    setCities(cityRes.data);
-    setCourses(courseRes.data);
-    setSubcourses(subcourseRes.data);
+    setCities(allCities);
+    setCourses(allCourses);
+    setSubcourses(allSubcourses);
   }
 
 
@@ -208,10 +210,14 @@ export default function Dashboard() {
 async function editBranding(data: {
   courses: number[];
   subcourses: number[];
+  about: string;
   logo: File | null;
   banner: File | null;
 }) {
   const formData = new FormData();
+
+  // تو ویرایش همیشه ارسال می‌شه تا کاربر بتونه متن «درباره» رو پاک کنه
+  formData.append("about", data.about.trim());
 
   data.courses.forEach((course) => {
     formData.append("courses", String(course));
@@ -246,11 +252,17 @@ async function editBranding(data: {
 async function createBranding(data: {
   courses: number[];
   subcourses: number[];
+  about: string;
   logo: File | null;
   banner: File | null;
 }) {
   try {
     const formData = new FormData();
+
+    // فیلد اختیاریه؛ تو ثبت اولیه فقط وقتی پر شده ارسال می‌شه
+    if (data.about.trim()) {
+      formData.append("about", data.about.trim());
+    }
 
     data.courses.forEach((course) => {
       formData.append("courses", String(course));
