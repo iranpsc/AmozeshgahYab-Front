@@ -26,6 +26,7 @@ const socialLinks = [
 
 const POPULAR_COUNT = 6;
 
+
 const headingClass = "mb-5 text-sm font-bold text-primary sm:text-base";
 const linkClass = "text-sm leading-7 text-foreground/65 transition-colors hover:text-foreground";
 const disabledClass = "cursor-not-allowed text-sm leading-7 text--foreground/30";
@@ -202,11 +203,15 @@ export default async function Footer() {
           </div>
 
           <div className="flex items-center justify-center lg:justify-start">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=754796&Code=7TnLHQ7fELIsmQDvWjxzsPjzf4rCXYXj'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=754796&Code=7TnLHQ7fELIsmQDvWjxzsPjzf4rCXYXj' alt='' style='cursor:pointer' code='7TnLHQ7fELIsmQDvWjxzsPjzf4rCXYXj'></a>`,
-              }}
-            />
+            <Link href="/enamad" aria-label="نماد اعتماد الکترونیکی">
+              <Image
+                src="/enamad.png"
+                alt="نماد اعتماد الکترونیکی"
+                width={80}
+                height={80}
+                className="h-20 w-20 cursor-pointer object-contain"
+              />
+            </Link>
           </div>
         </div>
       </div>
