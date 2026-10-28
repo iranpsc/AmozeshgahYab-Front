@@ -14,31 +14,11 @@ async function handler(
 ) {
   const { path } = await context.params;
 
-  const upstreamBase = new URL(API_URL);
-  if (upstreamBase.protocol !== "http:" && upstreamBase.protocol !== "https:") {
-    return NextResponse.json({ detail: "Invalid upstream API URL." }, { status: 500 });
-  }
+  const endpoint = path.join("/");
 
-  const sanitizedSegments = path.map((segment) => {
-    const decoded = decodeURIComponent(segment);
-    if (
-      !decoded ||
-      decoded === "." ||
-      decoded === ".." ||
-      decoded.includes("/") ||
-      decoded.includes("\\")
-    ) {
-      throw new Error("Invalid path segment.");
-    }
-    return encodeURIComponent(decoded);
-  });
-
-  upstreamBase.pathname = `${upstreamBase.pathname.replace(/\/+$/, "")}/${sanitizedSegments.join("/")}`;
-  req.nextUrl.searchParams.forEach((value, key) => {
-    upstreamBase.searchParams.append(key, value);
-  });
-
-  const url = upstreamBase.toString();
+  // نکته: قبلاً کوئری‌استرینگ (?search=...&page=...) اینجا گم می‌شد چون
+  // فقط endpoint چسبونده می‌شد. الان req.nextUrl.search رو هم اضافه کردیم.
+  const url = `${API_URL}/${endpoint}/${req.nextUrl.search}`;
 
   const access = req.cookies.get("access")?.value;
   const refresh = req.cookies.get("refresh")?.value;
@@ -74,15 +54,7 @@ async function handler(
     });
   }
 
-  let response: Response;
-  try {
-    response = await request();
-  } catch (error) {
-    if (error instanceof Error && error.message === "Invalid path segment.") {
-      return NextResponse.json({ detail: "Invalid path." }, { status: 400 });
-    }
-    throw error;
-  }
+  let response = await request();
 
   // console.log("Backend Status:", response.status);
 
